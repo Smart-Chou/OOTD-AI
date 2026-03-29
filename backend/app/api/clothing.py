@@ -98,16 +98,49 @@ async def upload_clothing_image(
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user)
 ):
+    from app.core.config import settings
+
+    # Validate file type
+    if file.content_type not in settings.ALLOWED_IMAGE_TYPES:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Invalid file type. Allowed: {', '.join(settings.ALLOWED_IMAGE_TYPES)}"
+        )
+
+    # Read file content to check size
+    content = await file.read()
+    file_size = len(content)
+
+    # Validate file size (max 10MB)
+    max_size_bytes = settings.MAX_UPLOAD_SIZE_MB * 1024 * 1024
+    if file_size > max_size_bytes:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"File too large. Maximum size: {settings.MAX_UPLOAD_SIZE_MB}MB"
+        )
+
+    # Check for malicious file signatures (basic check)
+    # JPEG: starts with FF D8, PNG: starts with 89 50 4E 47
+    if content[:2] == b'\xff\xd8' or content[:4] == b'\x89PNG':
+        pass  # Valid image header
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Invalid image file"
+        )
+
     # Create upload directory if not exists
     os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-    # Generate unique filename
-    file_ext = os.path.splitext(file.filename)[1]
+    # Generate unique filename with extension validation
+    file_ext = os.path.splitext(file.filename)[1].lower()
+    if file_ext not in ['.jpg', '.jpeg', '.png', '.webp', '.gif']:
+        file_ext = '.jpg'  # Default to jpg
+
     filename = f"{uuid.uuid4()}{file_ext}"
     file_path = os.path.join(UPLOAD_DIR, filename)
 
     # Save file
-    content = await file.read()
     with open(file_path, "wb") as f:
         f.write(content)
 
