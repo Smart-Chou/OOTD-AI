@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Card, Button, Row, Col, Typography, Empty, Spin, message } from 'antd';
-import { BulbOutlined, StarOutlined } from '@ant-design/icons';
+import { Card, Button, Row, Col, Typography, Empty, Spin } from 'antd';
+import { BulbOutlined } from '@ant-design/icons';
 import { useBodyDataStore, useWardrobeStore } from '../stores';
+import { useMessage } from '../hooks/useMessage';
 
 const { Title, Paragraph } = Typography;
 
@@ -9,6 +10,7 @@ const RecommendationPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const { bodyData } = useBodyDataStore();
   const { clothing } = useWardrobeStore();
+  const message = useMessage();
 
   const handleGenerate = () => {
     if (!bodyData) {

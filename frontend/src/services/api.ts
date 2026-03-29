@@ -21,7 +21,9 @@ api.interceptors.request.use((config) => {
 
 // Auth API
 export const authApi = {
-  login: (data: LoginRequest) => api.post<Token>('/auth/login', data),
+  login: (data: LoginRequest) => api.post<Token>('/auth/login', data, {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  }),
   register: (data: RegisterRequest) => api.post<User>('/auth/register', data),
   getMe: () => api.get<User>('/auth/me'),
   updateProfile: (data: Partial<User>) => api.put<User>('/auth/me', data),
@@ -39,17 +41,17 @@ export const userApi = {
 
 // Wardrobe API
 export const wardrobeApi = {
-  getClothingList: (category?: string) => api.get<ClothingItem[]>('/wardrobe/clothing', { params: { category } }),
-  getClothing: (id: number) => api.get<ClothingItem>(`/wardrobe/clothing/${id}`),
+  getClothingList: (category?: string) => api.get<ClothingItem[]>('/wardrobe/', { params: { category } }),
+  getClothing: (id: number) => api.get<ClothingItem>(`/wardrobe/${id}`),
   createClothing: (data: Omit<ClothingItem, 'id' | 'user_id' | 'created_at'>) =>
-    api.post<ClothingItem>('/wardrobe/clothing', data),
+    api.post<ClothingItem>('/wardrobe/', data),
   updateClothing: (id: number, data: Partial<ClothingItem>) =>
-    api.put<ClothingItem>(`/wardrobe/clothing/${id}`, data),
-  deleteClothing: (id: number) => api.delete(`/wardrobe/clothing/${id}`),
+    api.put<ClothingItem>(`/wardrobe/${id}`, data),
+  deleteClothing: (id: number) => api.delete(`/wardrobe/${id}`),
   uploadImage: (file: File) => {
     const formData = new FormData();
     formData.append('file', file);
-    return api.post<{ image_url: string }>('/wardrobe/clothing/upload', formData, {
+    return api.post<{ image_url: string }>('/wardrobe/upload', formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
@@ -57,11 +59,11 @@ export const wardrobeApi = {
 
 // Outfit API
 export const outfitApi = {
-  getOutfits: () => api.get<Outfit[]>('/outfits'),
+  getOutfits: () => api.get<Outfit[]>('/outfits/'),
   getPublicOutfits: () => api.get<Outfit[]>('/outfits/public'),
   getOutfit: (id: number) => api.get<Outfit>(`/outfits/${id}`),
   createOutfit: (data: Omit<Outfit, 'id' | 'user_id' | 'created_at' | 'likes_count'>) =>
-    api.post<Outfit>('/outfits', data),
+    api.post<Outfit>('/outfits/', data),
   updateOutfit: (id: number, data: Partial<Outfit>) =>
     api.put<Outfit>(`/outfits/${id}`, data),
   deleteOutfit: (id: number) => api.delete(`/outfits/${id}`),

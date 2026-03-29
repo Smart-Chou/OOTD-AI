@@ -10,7 +10,7 @@ from app.api.auth import get_current_user
 router = APIRouter()
 
 
-@router.post("/outfits", response_model=OutfitResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=OutfitResponse, status_code=status.HTTP_201_CREATED)
 def create_outfit(
     outfit: OutfitCreate,
     current_user: User = Depends(get_current_user),
@@ -45,7 +45,7 @@ def create_outfit(
     return db_outfit
 
 
-@router.get("/outfits", response_model=List[OutfitResponse])
+@router.get("/", response_model=List[OutfitResponse])
 def get_outfits(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
@@ -53,14 +53,14 @@ def get_outfits(
     return db.query(Outfit).filter(Outfit.user_id == current_user.id).all()
 
 
-@router.get("/outfits/public", response_model=List[OutfitResponse])
+@router.get("/public", response_model=List[OutfitResponse])
 def get_public_outfits(
     db: Session = Depends(get_db)
 ):
     return db.query(Outfit).filter(Outfit.is_public == 1).all()
 
 
-@router.get("/outfits/{outfit_id}", response_model=OutfitResponse)
+@router.get("/{outfit_id}", response_model=OutfitResponse)
 def get_outfit(
     outfit_id: int,
     current_user: User = Depends(get_current_user),
@@ -75,7 +75,7 @@ def get_outfit(
     return outfit
 
 
-@router.put("/outfits/{outfit_id}", response_model=OutfitResponse)
+@router.put("/{outfit_id}", response_model=OutfitResponse)
 def update_outfit(
     outfit_id: int,
     outfit_update: OutfitUpdate,
@@ -96,7 +96,7 @@ def update_outfit(
     return outfit
 
 
-@router.delete("/outfits/{outfit_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{outfit_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_outfit(
     outfit_id: int,
     current_user: User = Depends(get_current_user),

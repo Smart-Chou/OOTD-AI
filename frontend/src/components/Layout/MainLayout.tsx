@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Layout, Menu, Button, Avatar, Dropdown } from 'antd';
 import { UserOutlined, AppstoreOutlined, ShopOutlined, ScissorOutlined, HeartOutlined, LogoutOutlined } from '@ant-design/icons';
-import { useAuthStore } from '../stores';
+import { useAuthStore } from '../../stores';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const { Header, Sider, Content } = Layout;

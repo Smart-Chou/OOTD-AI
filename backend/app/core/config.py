@@ -9,7 +9,7 @@ class Settings(BaseSettings):
     DEBUG: bool = True
 
     # Database
-    DATABASE_URL: str = "postgresql://fashion_user:fashion_password@localhost:5432/fashion_db"
+    DATABASE_URL: str = "sqlite:///./ootd.db"
     POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "fashion_db"

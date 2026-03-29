@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Card, Typography, message } from 'antd';
+import { Form, Input, Button, Card, Typography } from 'antd';
 import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/api';
 import { useAuthStore } from '../stores';
+import { useMessage } from '../hooks/useMessage';
 
 const { Title } = Typography;
 
@@ -11,6 +12,7 @@ const RegisterPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser, setToken } = useAuthStore();
+  const message = useMessage();
 
   const onFinish = async (values: { email: string; username: string; password: string; full_name?: string }) => {
     setLoading(true);
@@ -33,7 +35,8 @@ const RegisterPage: React.FC = () => {
       message.success('注册成功');
       navigate('/dashboard');
     } catch (error: any) {
-      message.error(error.response?.data?.detail || '注册失败');
+      const errorMsg = error.response?.data?.detail || '注册失败';
+      message.error(typeof errorMsg === 'string' ? errorMsg : '注册失败');
     } finally {
       setLoading(false);
     }

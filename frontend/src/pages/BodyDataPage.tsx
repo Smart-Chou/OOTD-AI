@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { Card, Form, Input, Select, Button, message, Row, Col, Typography, InputNumber } from 'antd';
+import { Card, Form, Input, Select, Button, Row, Col, Typography, InputNumber } from 'antd';
 import { userApi } from '../services/api';
 import { useBodyDataStore } from '../stores';
+import { useMessage } from '../hooks/useMessage';
 
-const { Title } = Typography;
+const { Title, Paragraph } = Typography;
 const { Option } = Select;
 
 const BodyDataPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
   const { bodyData, setBodyData } = useBodyDataStore();
+  const message = useMessage();
 
   const onFinish = async (values: any) => {
     setLoading(true);

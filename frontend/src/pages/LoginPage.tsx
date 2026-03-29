@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Form, Input, Button, Card, Typography, message } from 'antd';
+import { Form, Input, Button, Card, Typography } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { authApi } from '../services/api';
 import { useAuthStore } from '../stores';
+import { useMessage } from '../hooks/useMessage';
 
 const { Title } = Typography;
 
@@ -11,6 +12,7 @@ const LoginPage: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { setUser, setToken } = useAuthStore();
+  const message = useMessage();
 
   const onFinish = async (values: { username: string; password: string }) => {
     setLoading(true);
@@ -32,7 +34,8 @@ const LoginPage: React.FC = () => {
       message.success('登录成功');
       navigate('/dashboard');
     } catch (error: any) {
-      message.error(error.response?.data?.detail || '登录失败');
+      const errorMsg = error.response?.data?.detail || '登录失败';
+      message.error(typeof errorMsg === 'string' ? errorMsg : '登录失败');
     } finally {
       setLoading(false);
     }

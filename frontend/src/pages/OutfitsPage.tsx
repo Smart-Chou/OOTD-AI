@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Table, Button, Modal, Form, Input, Select, message, Row, Col, Typography, Tag, Switch } from 'antd';
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { Card, Table, Button, Modal, Form, Input, Select, Row, Col, Typography, Tag, Switch } from 'antd';
+import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons';
 import { outfitApi, wardrobeApi } from '../services/api';
-import { useOutfitStore, useWardrobeStore } from '../stores';
+import { useOutfitStore } from '../stores';
+import { useMessage } from '../hooks/useMessage';
 import type { Outfit, ClothingItem } from '../types';
 
 const { Title, Paragraph } = Typography;
@@ -25,6 +26,7 @@ const OutfitsPage: React.FC = () => {
   const [allClothing, setAllClothing] = useState<ClothingItem[]>([]);
   const [form] = Form.useForm();
   const { outfits, setOutfits, addOutfit, updateOutfit, removeOutfit } = useOutfitStore();
+  const message = useMessage();
 
   useEffect(() => {
     loadOutfits();

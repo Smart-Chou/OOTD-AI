@@ -15,7 +15,7 @@ router = APIRouter()
 UPLOAD_DIR = "uploads/clothing"
 
 
-@router.post("/clothing", response_model=ClothingResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=ClothingResponse, status_code=status.HTTP_201_CREATED)
 def create_clothing(
     clothing: ClothingCreate,
     current_user: User = Depends(get_current_user),
@@ -28,7 +28,7 @@ def create_clothing(
     return db_clothing
 
 
-@router.get("/clothing", response_model=List[ClothingResponse])
+@router.get("/", response_model=List[ClothingResponse])
 def get_clothing_list(
     category: str = None,
     current_user: User = Depends(get_current_user),
@@ -40,7 +40,7 @@ def get_clothing_list(
     return query.all()
 
 
-@router.get("/clothing/{clothing_id}", response_model=ClothingResponse)
+@router.get("/{clothing_id}", response_model=ClothingResponse)
 def get_clothing(
     clothing_id: int,
     current_user: User = Depends(get_current_user),
@@ -55,7 +55,7 @@ def get_clothing(
     return clothing
 
 
-@router.put("/clothing/{clothing_id}", response_model=ClothingResponse)
+@router.put("/{clothing_id}", response_model=ClothingResponse)
 def update_clothing(
     clothing_id: int,
     clothing_update: ClothingUpdate,
@@ -76,7 +76,7 @@ def update_clothing(
     return clothing
 
 
-@router.delete("/clothing/{clothing_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{clothing_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_clothing(
     clothing_id: int,
     current_user: User = Depends(get_current_user),
@@ -93,7 +93,7 @@ def delete_clothing(
     return None
 
 
-@router.post("/clothing/upload")
+@router.post("/upload")
 async def upload_clothing_image(
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user)
