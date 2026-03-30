@@ -5,7 +5,7 @@ import ClothingSelector, { ClothingItem } from '../components/ClothingSelector'
 import TryOnProgress from '../components/TryOnProgress'
 import TryOnResult from '../components/TryOnResult'
 import { tryOnApi } from '../services/api'
-import { message } from 'antd'
+import { useMessage } from '../hooks/useMessage'
 
 type StepType = 'upload' | 'select' | 'generating' | 'result'
 
@@ -27,6 +27,7 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
     const [progress, setProgress] = useState(0)
     const [activeTip, setActiveTip] = useState(0)
     const [resultImageUrl, setResultImageUrl] = useState<string | null>(null)
+    const message = useMessage()
 
     // Rotate tips
     useEffect(() => {

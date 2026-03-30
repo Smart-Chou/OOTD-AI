@@ -1,18 +1,14 @@
 import React, { useState } from 'react'
-import { Form, Input, Button, Card, Typography } from 'antd'
-import { UserOutlined, LockOutlined, MailOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { Form, Input, Button, Card, Typography } from '@arco-design/web-react'
+import { User, Lock, Mail } from 'lucide-react'
 import { authApi } from '../services/api'
-import { useAuthStore } from '../stores'
-import { useMessage } from '../hooks/useMessage'
+import { useAuthPage } from '../hooks/useAuthPage'
 
 const { Title } = Typography
 
 const RegisterPage: React.FC = () => {
     const [loading, setLoading] = useState(false)
-    const navigate = useNavigate()
-    const { setUser, setToken } = useAuthStore()
-    const message = useMessage()
+    const { navigate, setUser, setToken, message } = useAuthPage()
 
     const onFinish = async (values: {
         email: string
@@ -26,11 +22,7 @@ const RegisterPage: React.FC = () => {
             const user = response.data
 
             // Auto login after register
-            const loginFormData = new URLSearchParams()
-            loginFormData.append('username', values.username)
-            loginFormData.append('password', values.password)
-
-            const loginResponse = await authApi.login(loginFormData.toString())
+            const loginResponse = await authApi.login({ username: values.username, password: values.password })
             const { access_token } = loginResponse.data
 
             localStorage.setItem('token', access_token)
@@ -56,39 +48,57 @@ const RegisterPage: React.FC = () => {
                 minHeight: 'calc(100vh - 200px)',
             }}
         >
-            <Card style={{ width: 400 }}>
-                <Title level={3} style={{ textAlign: 'center' }}>
+            <Card style={{ width: 400, borderRadius: 12 }}>
+                <Title heading={3} style={{ textAlign: 'center', marginBottom: 24 }}>
                     注册
                 </Title>
-                <Form name="register" onFinish={onFinish} size="large">
+                <Form name="register" onSubmit={onFinish} size="large">
                     <Form.Item
-                        name="email"
+                        field="email"
                         rules={[{ required: true, type: 'email', message: '请输入有效邮箱' }]}
                     >
-                        <Input prefix={<MailOutlined />} placeholder="邮箱" />
+                        <Input
+                            prefix={<Mail className="w-4 h-4" />}
+                            placeholder="邮箱"
+                            style={{ borderRadius: 8 }}
+                        />
                     </Form.Item>
                     <Form.Item
-                        name="username"
-                        rules={[{ required: true, min: 3, message: '用户名至少3个字符' }]}
+                        field="username"
+                        rules={[{ required: true, minLength: 3, message: '用户名至少3个字符' }]}
                     >
-                        <Input prefix={<UserOutlined />} placeholder="用户名" />
+                        <Input
+                            prefix={<User className="w-4 h-4" />}
+                            placeholder="用户名"
+                            style={{ borderRadius: 8 }}
+                        />
                     </Form.Item>
                     <Form.Item
-                        name="password"
-                        rules={[{ required: true, min: 6, message: '密码至少6个字符' }]}
+                        field="password"
+                        rules={[{ required: true, minLength: 6, message: '密码至少6个字符' }]}
                     >
-                        <Input.Password prefix={<LockOutlined />} placeholder="密码" />
+                        <Input.Password
+                            prefix={<Lock className="w-4 h-4" />}
+                            placeholder="密码"
+                            style={{ borderRadius: 8 }}
+                        />
                     </Form.Item>
-                    <Form.Item name="full_name" rules={[{ required: false }]}>
-                        <Input placeholder="姓名（可选）" />
+                    <Form.Item field="full_name">
+                        <Input placeholder="姓名（可选）" style={{ borderRadius: 8 }} />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" loading={loading} block>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={loading}
+                            long
+                            style={{ borderRadius: 8, height: 44 }}
+                        >
                             注册
                         </Button>
                     </Form.Item>
                 </Form>
-                <div style={{ textAlign: 'center' }}>
+                <div style={{ textAlign: 'center', marginTop: 16 }}>
                     已有账号？ <a href="/login">立即登录</a>
                 </div>
             </Card>

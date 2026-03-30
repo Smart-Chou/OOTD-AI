@@ -19,6 +19,8 @@ declare global {
   const ChevronRight: typeof import('lucide-react').ChevronRight
   const Cpu: typeof import('lucide-react').Cpu
   const Download: typeof import('lucide-react').Download
+  const Edit: typeof import('lucide-react').Edit
+  const Eye: typeof import('lucide-react').Eye
   const File: typeof import('lucide-react').File
   const Filter: typeof import('lucide-react').Filter
   const Form: typeof import('lucide-react').Form
@@ -31,12 +33,16 @@ declare global {
   const Image: typeof import('lucide-react').Image
   const Info: typeof import('lucide-react').Info
   const Layout: typeof import('lucide-react').Layout
+  const LayoutDashboard: typeof import('lucide-react').LayoutDashboard
   const List: typeof import('lucide-react').List
+  const Lock: typeof import('lucide-react').Lock
   const LogOut: typeof import('lucide-react').LogOut
+  const Mail: typeof import('lucide-react').Mail
   const Menu: typeof import('lucide-react').Menu
   const MenuIcon: typeof import('lucide-react').MenuIcon
   const MoreHorizontal: typeof import('lucide-react').MoreHorizontal
   const Option: typeof import('lucide-react').Option
+  const Palette: typeof import('lucide-react').Palette
   const Phone: typeof import('lucide-react').Phone
   const Plus: typeof import('lucide-react').Plus
   const Radio: typeof import('lucide-react').Radio
@@ -57,6 +63,7 @@ declare global {
   const Table: typeof import('lucide-react').Table
   const Tag: typeof import('lucide-react').Tag
   const Text: typeof import('lucide-react').Text
+  const Trash2: typeof import('lucide-react').Trash2
   const TrendingUp: typeof import('lucide-react').TrendingUp
   const Upload: typeof import('lucide-react').Upload
   const User: typeof import('lucide-react').User

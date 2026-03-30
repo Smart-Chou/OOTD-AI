@@ -6,7 +6,7 @@ from jose import JWTError, jwt
 import secrets
 
 from app.core.database import get_db
-from app.core.security import verify_password, get_password_hash
+from app.core.security import verify_password, get_password_hash, validate_password_strength
 from app.core.config import settings
 from app.models.models import User, BodyData, RefreshToken
 from app.schemas.schemas import (
@@ -108,6 +108,11 @@ def register(request: Request, user: UserCreate, db: Session = Depends(get_db)):
     # Check if username exists
     if db.query(User).filter(User.username == user.username).first():
         raise HTTPException(status_code=400, detail="Username already taken")
+
+    # Validate password strength
+    is_valid, error_msg = validate_password_strength(user.password)
+    if not is_valid:
+        raise HTTPException(status_code=400, detail=error_msg)
 
     hashed_password = get_password_hash(user.password)
     db_user = User(

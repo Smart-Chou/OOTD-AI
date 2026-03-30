@@ -1,10 +1,36 @@
 import React from 'react'
-import { Card, Row, Col, Statistic, Typography, Button } from 'antd'
-import { UserOutlined, ShopOutlined, ScissorOutlined, RightOutlined } from '@ant-design/icons'
+import { Card, Row, Col, Typography, Grid } from '@arco-design/web-react'
+import { User, Shirt, Palette } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore, useWardrobeStore, useOutfitStore } from '../stores'
 
-const { Title, Paragraph } = Typography
+const { Title, Text } = Typography
+const { Row: GridRow, Col: GridCol } = Grid
+
+interface QuickActionProps {
+    icon: React.ReactNode
+    title: string
+    desc: string
+    onClick: () => void
+}
+
+const QuickAction: React.FC<QuickActionProps> = ({ icon, title, desc, onClick }) => (
+    <Card
+        hoverable
+        onClick={onClick}
+        style={{ cursor: 'pointer', borderRadius: 12 }}
+        bodyStyle={{ padding: 20 }}
+    >
+        <div style={{ fontSize: 32, marginBottom: 12, color: 'var(--primary, #2D503C)' }}>
+            {icon}
+        </div>
+        <Title heading={5} style={{ margin: '8px 0 4px' }}>{title}</Title>
+        <Text type="secondary">{desc}</Text>
+        <div style={{ marginTop: 12 }}>
+            <span style={{ color: 'var(--primary, #2D503C)' }}>前往 →</span>
+        </div>
+    </Card>
+)
 
 const DashboardPage: React.FC = () => {
     const navigate = useNavigate()
@@ -15,81 +41,80 @@ const DashboardPage: React.FC = () => {
     const quickActions = [
         {
             key: 'body-data',
-            icon: <UserOutlined />,
+            icon: <User className="w-8 h-8" />,
             title: '完善体型数据',
             desc: '获得更精准的穿搭推荐',
-            path: '/body-data',
         },
         {
             key: 'wardrobe',
-            icon: <ShopOutlined />,
+            icon: <Shirt className="w-8 h-8" />,
             title: '添加衣物',
             desc: '丰富您的衣橱',
-            path: '/wardrobe',
         },
         {
             key: 'outfits',
-            icon: <ScissorOutlined />,
+            icon: <Palette className="w-8 h-8" />,
             title: '创建搭配',
             desc: '尝试不同穿搭组合',
-            path: '/outfits',
         },
     ]
 
     return (
         <div>
-            <Title level={2}>欢迎回来, {user?.username || '用户'}!</Title>
-            <Paragraph>这是您的个人穿搭助手主页</Paragraph>
+            <Title heading={2}>欢迎回来, {user?.username || '用户'}!</Title>
+            <Text>这是您的个人穿搭助手主页</Text>
 
-            <Row gutter={[16, 16]} style={{ marginTop: 24 }}>
-                <Col xs={24} sm={8}>
-                    <Card>
-                        <Statistic
-                            title="衣物数量"
-                            value={clothing.length}
-                            prefix={<ShopOutlined />}
-                        />
+            <GridRow gutter={[16, 16]} style={{ marginTop: 24 }}>
+                <GridCol xs={24} sm={8}>
+                    <Card style={{ borderRadius: 12 }} bodyStyle={{ padding: 20 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                            <Shirt className="w-6 h-6" style={{ color: 'var(--primary, #2D503C)' }} />
+                            <div>
+                                <Text type="secondary">衣物数量</Text>
+                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>{clothing.length}</div>
+                            </div>
+                        </div>
                     </Card>
-                </Col>
-                <Col xs={24} sm={8}>
-                    <Card>
-                        <Statistic
-                            title="搭配方案"
-                            value={outfits.length}
-                            prefix={<ScissorOutlined />}
-                        />
+                </GridCol>
+                <GridCol xs={24} sm={8}>
+                    <Card style={{ borderRadius: 12 }} bodyStyle={{ padding: 20 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                            <Palette className="w-6 h-6" style={{ color: 'var(--primary, #2D503C)' }} />
+                            <div>
+                                <Text type="secondary">搭配方案</Text>
+                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>{outfits.length}</div>
+                            </div>
+                        </div>
                     </Card>
-                </Col>
-                <Col xs={24} sm={8}>
-                    <Card>
-                        <Statistic
-                            title="用户角色"
-                            value={user?.role || 'user'}
-                            prefix={<UserOutlined />}
-                        />
+                </GridCol>
+                <GridCol xs={24} sm={8}>
+                    <Card style={{ borderRadius: 12 }} bodyStyle={{ padding: 20 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                            <User className="w-6 h-6" style={{ color: 'var(--primary, #2D503C)' }} />
+                            <div>
+                                <Text type="secondary">用户角色</Text>
+                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>{user?.role || 'user'}</div>
+                            </div>
+                        </div>
                     </Card>
-                </Col>
-            </Row>
+                </GridCol>
+            </GridRow>
 
-            <Title level={4} style={{ marginTop: 32 }}>
+            <Title heading={4} style={{ marginTop: 32 }}>
                 快速操作
             </Title>
-            <Row gutter={[16, 16]}>
-                {quickActions.map(action => (
-                    <Col xs={24} sm={8} key={action.key}>
-                        <Card hoverable onClick={() => navigate(action.path)}>
-                            <div style={{ fontSize: 32, marginBottom: 12, color: '#1890ff' }}>
-                                {action.icon}
-                            </div>
-                            <Title level={5}>{action.title}</Title>
-                            <Paragraph type="secondary">{action.desc}</Paragraph>
-                            <Button type="link" icon={<RightOutlined />}>
-                                前往
-                            </Button>
-                        </Card>
-                    </Col>
+            <GridRow gutter={[16, 16]}>
+                {quickActions.map((action, index) => (
+                    <GridCol xs={24} sm={8} key={action.key}>
+                        <QuickAction
+                            icon={action.icon}
+                            title={action.title}
+                            desc={action.desc}
+                            onClick={() => navigate(`/${action.key.replace('-', '-')}`)}
+                        />
+                    </GridCol>
                 ))}
-            </Row>
+            </GridRow>
         </div>
     )
 }

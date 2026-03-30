@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import { Card, Form, Input, Select, Button, Row, Col, Typography, InputNumber } from 'antd'
+import { Card, Form, Select, Button, Typography, InputNumber, Grid } from '@arco-design/web-react'
 import { userApi } from '../services/api'
 import { useBodyDataStore } from '../stores'
 import { useMessage } from '../hooks/useMessage'
 
-const { Title, Paragraph } = Typography
-const { Option } = Select
+const { Title, Text } = Typography
+const { Row, Col } = Grid
 
 const BodyDataPage: React.FC = () => {
     const [loading, setLoading] = useState(false)
@@ -34,21 +34,21 @@ const BodyDataPage: React.FC = () => {
 
     return (
         <div>
-            <Title level={2}>体型数据</Title>
-            <Paragraph>填写您的身体数据，获得更精准的穿搭推荐</Paragraph>
+            <Title heading={2}>体型数据</Title>
+            <Text type="secondary">填写您的身体数据，获得更精准的穿搭推荐</Text>
 
-            <Card style={{ maxWidth: 800 }}>
+            <Card style={{ maxWidth: 800, marginTop: 16, borderRadius: 12 }}>
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={onFinish}
+                    onSubmit={onFinish}
                     initialValues={bodyData || {}}
                 >
                     <Row gutter={16}>
-                        <Col xs={24} sm={12}>
+                        <Col span={12}>
                             <Form.Item
                                 label="身高 (cm)"
-                                name="height"
+                                field="height"
                                 rules={[{ required: true, message: '请输入身高' }]}
                             >
                                 <InputNumber
@@ -59,10 +59,10 @@ const BodyDataPage: React.FC = () => {
                                 />
                             </Form.Item>
                         </Col>
-                        <Col xs={24} sm={12}>
+                        <Col span={12}>
                             <Form.Item
                                 label="体重 (kg)"
-                                name="weight"
+                                field="weight"
                                 rules={[{ required: true, message: '请输入体重' }]}
                             >
                                 <InputNumber
@@ -76,8 +76,8 @@ const BodyDataPage: React.FC = () => {
                     </Row>
 
                     <Row gutter={16}>
-                        <Col xs={24} sm={12}>
-                            <Form.Item label="年龄" name="age">
+                        <Col span={12}>
+                            <Form.Item label="年龄" field="age">
                                 <InputNumber
                                     style={{ width: '100%' }}
                                     min={10}
@@ -86,20 +86,20 @@ const BodyDataPage: React.FC = () => {
                                 />
                             </Form.Item>
                         </Col>
-                        <Col xs={24} sm={12}>
-                            <Form.Item label="性别" name="gender">
+                        <Col span={12}>
+                            <Form.Item label="性别" field="gender">
                                 <Select placeholder="请选择">
-                                    <Option value="male">男</Option>
-                                    <Option value="female">女</Option>
-                                    <Option value="other">其他</Option>
+                                    <Select.Option value="male">男</Select.Option>
+                                    <Select.Option value="female">女</Select.Option>
+                                    <Select.Option value="other">其他</Select.Option>
                                 </Select>
                             </Form.Item>
                         </Col>
                     </Row>
 
                     <Row gutter={16}>
-                        <Col xs={24} sm={12}>
-                            <Form.Item label="胸围 (cm)" name="chest">
+                        <Col span={12}>
+                            <Form.Item label="胸围 (cm)" field="chest">
                                 <InputNumber
                                     style={{ width: '100%' }}
                                     min={50}
@@ -108,8 +108,8 @@ const BodyDataPage: React.FC = () => {
                                 />
                             </Form.Item>
                         </Col>
-                        <Col xs={24} sm={12}>
-                            <Form.Item label="腰围 (cm)" name="waist">
+                        <Col span={12}>
+                            <Form.Item label="腰围 (cm)" field="waist">
                                 <InputNumber
                                     style={{ width: '100%' }}
                                     min={40}
@@ -121,8 +121,8 @@ const BodyDataPage: React.FC = () => {
                     </Row>
 
                     <Row gutter={16}>
-                        <Col xs={24} sm={12}>
-                            <Form.Item label="臀围 (cm)" name="hips">
+                        <Col span={12}>
+                            <Form.Item label="臀围 (cm)" field="hips">
                                 <InputNumber
                                     style={{ width: '100%' }}
                                     min={50}
@@ -131,8 +131,8 @@ const BodyDataPage: React.FC = () => {
                                 />
                             </Form.Item>
                         </Col>
-                        <Col xs={24} sm={12}>
-                            <Form.Item label="肩宽 (cm)" name="shoulder_width">
+                        <Col span={12}>
+                            <Form.Item label="肩宽 (cm)" field="shoulder_width">
                                 <InputNumber
                                     style={{ width: '100%' }}
                                     min={30}
@@ -143,18 +143,18 @@ const BodyDataPage: React.FC = () => {
                         </Col>
                     </Row>
 
-                    <Form.Item label="偏好风格" name="preferred_style">
+                    <Form.Item label="偏好风格" field="preferred_style">
                         <Select placeholder="请选择您的穿衣风格">
-                            <Option value="casual">休闲</Option>
-                            <Option value="formal">正式</Option>
-                            <Option value="street">街头</Option>
-                            <Option value="sporty">运动</Option>
-                            <Option value="minimalist">简约</Option>
+                            <Select.Option value="casual">休闲</Select.Option>
+                            <Select.Option value="formal">正式</Select.Option>
+                            <Select.Option value="street">街头</Select.Option>
+                            <Select.Option value="sporty">运动</Select.Option>
+                            <Select.Option value="minimalist">简约</Select.Option>
                         </Select>
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" loading={loading}>
+                        <Button type="primary" htmlType="submit" loading={loading} style={{ borderRadius: 8 }}>
                             {bodyData ? '更新数据' : '保存数据'}
                         </Button>
                     </Form.Item>

@@ -1,6 +1,6 @@
 """Tests for security utilities."""
 import pytest
-from app.core.security import get_password_hash, verify_password
+from app.core.security import get_password_hash, verify_password, validate_password_strength
 
 
 class TestPasswordHashing:
@@ -51,3 +51,43 @@ class TestPasswordHashing:
         # But both should verify correctly
         assert verify_password(password, hash1) is True
         assert verify_password(password, hash2) is True
+
+
+class TestPasswordValidation:
+    """Test password strength validation."""
+
+    def test_valid_password(self):
+        """Test that strong passwords pass validation."""
+        is_valid, error = validate_password_strength("SecurePass123!")
+        assert is_valid is True
+        assert error == ""
+
+    def test_password_too_short(self):
+        """Test that short passwords fail validation."""
+        is_valid, error = validate_password_strength("Ab1!")
+        assert is_valid is False
+        assert "长度至少8个字符" in error
+
+    def test_password_no_uppercase(self):
+        """Test that passwords without uppercase fail validation."""
+        is_valid, error = validate_password_strength("securepass123!")
+        assert is_valid is False
+        assert "大写字母" in error
+
+    def test_password_no_lowercase(self):
+        """Test that passwords without lowercase fail validation."""
+        is_valid, error = validate_password_strength("SECUREPASS123!")
+        assert is_valid is False
+        assert "小写字母" in error
+
+    def test_password_no_digit(self):
+        """Test that passwords without digits fail validation."""
+        is_valid, error = validate_password_strength("SecurePassword!")
+        assert is_valid is False
+        assert "数字" in error
+
+    def test_password_no_special_char(self):
+        """Test that passwords without special chars fail validation."""
+        is_valid, error = validate_password_strength("SecurePass123")
+        assert is_valid is False
+        assert "特殊字符" in error

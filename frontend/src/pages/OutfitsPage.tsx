@@ -1,26 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import {
-    Card,
-    Table,
-    Button,
-    Modal,
-    Form,
-    Input,
-    Select,
-    Row,
-    Col,
-    Typography,
-    Tag,
-    Switch,
-} from 'antd'
-import { PlusOutlined, EditOutlined, DeleteOutlined, EyeOutlined } from '@ant-design/icons'
+import { Card, Table, Button, Modal, Form, Input, Select, Switch, Typography, Grid } from '@arco-design/web-react'
+import { Plus, Edit, Trash2, Eye } from 'lucide-react'
 import { outfitApi, wardrobeApi } from '../services/api'
 import { useOutfitStore } from '../stores'
 import { useMessage } from '../hooks/useMessage'
 import type { Outfit, ClothingItem } from '../types'
 
-const { Title, Paragraph } = Typography
-const { Option } = Select
+const { Title, Text } = Typography
+const { Row, Col } = Grid
 
 const occasions = [
     { value: 'casual', label: '休闲' },
@@ -28,6 +15,13 @@ const occasions = [
     { value: 'work', label: '工作' },
     { value: 'date', label: '约会' },
     { value: 'sport', label: '运动' },
+]
+
+const seasons = [
+    { value: 'spring', label: '春季' },
+    { value: 'summer', label: '夏季' },
+    { value: 'fall', label: '秋季' },
+    { value: 'winter', label: '冬季' },
 ]
 
 const OutfitsPage: React.FC = () => {
@@ -109,6 +103,21 @@ const OutfitsPage: React.FC = () => {
         }
     }
 
+    const handleEdit = (record: Outfit) => {
+        setEditingOutfit(record)
+        form.setFieldsValue({
+            ...record,
+            item_ids: record.items.map(i => i.id),
+        })
+        setModalVisible(true)
+    }
+
+    const handleCreate = () => {
+        setEditingOutfit(null)
+        form.resetFields()
+        setModalVisible(true)
+    }
+
     const columns = [
         { title: '名称', dataIndex: 'name', key: 'name' },
         { title: '描述', dataIndex: 'description', key: 'description', ellipsis: true },
@@ -118,42 +127,24 @@ const OutfitsPage: React.FC = () => {
             key: 'occasion',
             render: (occasion: string) => {
                 const occ = occasions.find(o => o.value === occasion)
-                return <Tag>{occ?.label || occasion}</Tag>
+                return occ?.label || occasion
             },
         },
         {
             title: '公开',
             dataIndex: 'is_public',
             key: 'is_public',
-            render: (isPublic: number) => (
-                <Tag color={isPublic ? 'green' : 'default'}>{isPublic ? '公开' : '私有'}</Tag>
-            ),
+            render: (isPublic: number) => (isPublic ? '公开' : '私有'),
         },
         {
             title: '操作',
             key: 'action',
             render: (_: any, record: Outfit) => (
-                <>
-                    <Button type="link" icon={<EyeOutlined />} onClick={() => handleView(record)} />
-                    <Button
-                        type="link"
-                        icon={<EditOutlined />}
-                        onClick={() => {
-                            setEditingOutfit(record)
-                            form.setFieldsValue({
-                                ...record,
-                                item_ids: record.items.map(i => i.id),
-                            })
-                            setModalVisible(true)
-                        }}
-                    />
-                    <Button
-                        type="link"
-                        danger
-                        icon={<DeleteOutlined />}
-                        onClick={() => handleDelete(record.id)}
-                    />
-                </>
+                <div style={{ display: 'flex', gap: 8 }}>
+                    <Button size="mini" type="text" icon={<Eye size={14} />} onClick={() => handleView(record)} />
+                    <Button size="mini" type="text" icon={<Edit size={14} />} onClick={() => handleEdit(record)} />
+                    <Button size="mini" type="text" status="danger" icon={<Trash2 size={14} />} onClick={() => handleDelete(record.id)} />
+                </div>
             ),
         },
     ]
@@ -162,36 +153,33 @@ const OutfitsPage: React.FC = () => {
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                    <Title level={2}>搭配方案</Title>
-                    <Paragraph>创建和管理您的穿搭方案</Paragraph>
+                    <Title heading={2}>搭配方案</Title>
+                    <Text type="secondary">创建和管理您的穿搭方案</Text>
                 </div>
                 <Button
                     type="primary"
-                    icon={<PlusOutlined />}
-                    onClick={() => {
-                        setEditingOutfit(null)
-                        form.resetFields()
-                        setModalVisible(true)
-                    }}
+                    icon={<Plus size={14} />}
+                    onClick={handleCreate}
+                    style={{ borderRadius: 8 }}
                 >
                     创建搭配
                 </Button>
             </div>
 
-            <Card>
+            <Card style={{ marginTop: 16, borderRadius: 12 }}>
                 <Table
                     columns={columns}
-                    dataSource={outfits}
+                    data={outfits}
                     rowKey="id"
                     loading={loading}
-                    pagination={{ pageSize: 10 }}
+                    pagination={{ pageSize: 10, showTotal: true }}
                 />
             </Card>
 
             {/* Create/Edit Modal */}
             <Modal
                 title={editingOutfit ? '编辑搭配' : '创建搭配'}
-                open={modalVisible}
+                visible={modalVisible}
                 onCancel={() => {
                     setModalVisible(false)
                     setEditingOutfit(null)
@@ -200,58 +188,59 @@ const OutfitsPage: React.FC = () => {
                 footer={null}
                 width={600}
             >
-                <Form form={form} layout="vertical" onFinish={handleSubmit}>
+                <Form form={form} layout="vertical" onSubmit={handleSubmit}>
                     <Form.Item
                         label="名称"
-                        name="name"
+                        field="name"
                         rules={[{ required: true, message: '请输入名称' }]}
                     >
                         <Input placeholder="搭配名称" />
                     </Form.Item>
-                    <Form.Item label="描述" name="description">
+                    <Form.Item label="描述" field="description">
                         <Input.TextArea rows={3} placeholder="搭配描述" />
                     </Form.Item>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="场合" name="occasion">
+                            <Form.Item label="场合" field="occasion">
                                 <Select placeholder="请选择场合">
                                     {occasions.map(occ => (
-                                        <Option key={occ.value} value={occ.value}>
+                                        <Select.Option key={occ.value} value={occ.value}>
                                             {occ.label}
-                                        </Option>
+                                        </Select.Option>
                                     ))}
                                 </Select>
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="季节" name="season">
+                            <Form.Item label="季节" field="season">
                                 <Select placeholder="请选择季节">
-                                    <Option value="spring">春季</Option>
-                                    <Option value="summer">夏季</Option>
-                                    <Option value="fall">秋季</Option>
-                                    <Option value="winter">冬季</Option>
+                                    {seasons.map(s => (
+                                        <Select.Option key={s.value} value={s.value}>
+                                            {s.label}
+                                        </Select.Option>
+                                    ))}
                                 </Select>
                             </Form.Item>
                         </Col>
                     </Row>
                     <Form.Item
                         label="选择衣物"
-                        name="item_ids"
+                        field="item_ids"
                         rules={[{ required: true, message: '请选择至少一件衣物' }]}
                     >
                         <Select mode="multiple" placeholder="选择衣物">
                             {allClothing.map(item => (
-                                <Option key={item.id} value={item.id}>
+                                <Select.Option key={item.id} value={item.id}>
                                     {item.name} - {item.category}
-                                </Option>
+                                </Select.Option>
                             ))}
                         </Select>
                     </Form.Item>
-                    <Form.Item label="公开" name="is_public" valuePropName="checked">
-                        <Switch checkedChildren="公开" unCheckedChildren="私有" />
+                    <Form.Item label="公开" field="is_public" valuePropName="checked">
+                        <Switch />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" loading={loading} block>
+                        <Button type="primary" htmlType="submit" loading={loading} long style={{ borderRadius: 8 }}>
                             {editingOutfit ? '更新' : '创建'}
                         </Button>
                     </Form.Item>
@@ -261,26 +250,20 @@ const OutfitsPage: React.FC = () => {
             {/* View Modal */}
             <Modal
                 title={viewingOutfit?.name}
-                open={viewModalVisible}
+                visible={viewModalVisible}
                 onCancel={() => setViewModalVisible(false)}
                 footer={null}
                 width={600}
             >
-                <p>
-                    <strong>描述:</strong> {viewingOutfit?.description}
-                </p>
-                <p>
-                    <strong>场合:</strong> {viewingOutfit?.occasion}
-                </p>
-                <p>
-                    <strong>季节:</strong> {viewingOutfit?.season}
-                </p>
+                <p><strong>描述:</strong> {viewingOutfit?.description}</p>
+                <p><strong>场合:</strong> {viewingOutfit?.occasion}</p>
+                <p><strong>季节:</strong> {viewingOutfit?.season}</p>
                 <div style={{ marginTop: 16 }}>
                     <strong>包含衣物:</strong>
                     <Row gutter={[8, 8]} style={{ marginTop: 8 }}>
                         {viewingOutfit?.items.map(item => (
                             <Col xs={12} sm={8} key={item.id}>
-                                <Card size="small">{item.name}</Card>
+                                <Card size="small" style={{ borderRadius: 8 }}>{item.name}</Card>
                             </Col>
                         ))}
                     </Row>

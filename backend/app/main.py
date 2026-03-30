@@ -17,6 +17,7 @@ from slowapi.errors import RateLimitExceeded
 from app.core.config import settings
 from app.core.database import Base, get_engine
 from app.api import api_router
+from app.middleware.logging import RequestLoggingMiddleware, RequestIDMiddleware
 
 # Rate Limiter setup
 limiter = Limiter(key_func=get_remote_address)
@@ -54,6 +55,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Request logging middleware (added after CORS for proper order)
+app.add_middleware(RequestLoggingMiddleware)
+app.add_middleware(RequestIDMiddleware)
 
 # Include API router
 app.include_router(api_router, prefix=settings.API_V1_PREFIX)

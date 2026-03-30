@@ -1,10 +1,9 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import tailwindcss from '@tailwindcss/vite'
 import fs from 'fs'
 import AutoImport from 'unplugin-auto-import/vite'
-import checker from 'vite-plugin-checker'
 import * as lucideIcons from 'lucide-react'
 
 // 获取所有 lucide-react 导出的符号名
@@ -68,13 +67,6 @@ export default defineConfig({
                 enabled: false,
             },
         }),
-        // TypeScript checker disabled for smooth dev experience
-        // checker({
-        //   typescript: {
-        //     tsconfigPath: "tsconfig.app.json",
-        //   },
-        //   enableBuild: true,
-        // }),
     ],
     resolve: {
         alias: {
@@ -98,5 +90,11 @@ export default defineConfig({
                 changeOrigin: true,
             },
         },
+    },
+    test: {
+        globals: true,
+        environment: 'jsdom',
+        include: ['src/**/*.{test,spec}.{ts,tsx}'],
+        setupFiles: ['./src/test/setup.ts'],
     },
 })
