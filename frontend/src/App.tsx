@@ -60,7 +60,7 @@ const AppLayout = () => {
 
     return (
         <div className="min-w-full">
-            <div style={{ width: '1440px', margin: '0 auto', minHeight: '100vh' }}>
+            <div className="container-main min-h-screen">
                 <Header activePage={activePage} onNavigate={handleNavigate} />
                 <Routes>
                     <Route path="/" element={<HomePage onNavigate={handleNavigate} />} />

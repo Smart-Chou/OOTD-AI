@@ -10,17 +10,7 @@ import {
     FileUp,
     AlertCircle,
 } from 'lucide-react'
-import {
-    Button,
-    Input,
-    Empty,
-    Modal,
-    Form,
-    Input as FormInput,
-    Select,
-    Message,
-    Notification,
-} from '@arco-design/web-react'
+import { Button, Input, Empty, Form, Input as FormInput, Message } from '@arco-design/web-react'
 import ClothingCard from '../components/ClothingCard'
 import { wardrobeApi, bulkApi } from '../services/api'
 
@@ -67,7 +57,6 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
         errors: string[]
     } | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
-    const exportCategory = useRef<string>('')
 
     // Load clothing from API on mount
     useEffect(() => {

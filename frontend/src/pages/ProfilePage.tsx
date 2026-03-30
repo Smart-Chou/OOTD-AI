@@ -6,14 +6,11 @@ import {
     Shield,
     LogOut,
     ChevronRight,
-    Ruler,
-    Weight,
-    Calendar,
     Award,
     TrendingUp,
     Heart,
 } from 'lucide-react'
-import { Button, Avatar, Progress, Tag, Tabs, Badge } from '@arco-design/web-react'
+import { Button, Avatar, Progress, Tabs } from '@arco-design/web-react'
 import BodyDataForm from '../components/BodyDataForm'
 
 interface ProfilePageProps {

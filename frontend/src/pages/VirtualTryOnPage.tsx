@@ -91,7 +91,10 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
             })
 
             // Call AI try-on API
-            const apiResponse = await tryOnApi.generateTryOn(base64, selectedClothing.id)
+            const apiResponse = await tryOnApi.generateTryOn(
+                base64,
+                selectedClothing.id as unknown as number
+            )
 
             if (apiResponse.data.status === 'completed' && apiResponse.data.result_image_url) {
                 setResultImageUrl(apiResponse.data.result_image_url)

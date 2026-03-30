@@ -1,13 +1,14 @@
 import { Message } from '@arco-design/web-react'
 
-export type MessageType = 'info' | 'success' | 'warning' | 'error' | 'loading'
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type MessageReturn = any
 
 interface MessageApi {
-    loading: (content: string, duration?: number) => Promise<() => void>
-    success: (content: string, duration?: number) => Promise<() => void>
-    error: (content: string, duration?: number) => Promise<() => void>
-    info: (content: string, duration?: number) => Promise<() => void>
-    warning: (content: string, duration?: number) => Promise<() => void>
+    loading: (content: string, duration?: number) => MessageReturn
+    success: (content: string, duration?: number) => MessageReturn
+    error: (content: string, duration?: number) => MessageReturn
+    info: (content: string, duration?: number) => MessageReturn
+    warning: (content: string, duration?: number) => MessageReturn
 }
 
 export const useMessage = (): MessageApi => {

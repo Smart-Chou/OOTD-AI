@@ -19,7 +19,7 @@ describe('useAuthStore', () => {
                 username: 'test',
                 email: 'test@test.com',
                 role: 'user',
-                avatar_url: null,
+                avatar_url: undefined,
                 created_at: '',
             })
         })
@@ -104,12 +104,13 @@ describe('useWardrobeStore', () => {
             id: 1,
             user_id: 1,
             name: 'Test Shirt',
-            category: '上衣',
+            category: 'tops' as const,
             color: 'blue',
             season: 'summer',
-            image_url: null,
-            brand: null,
+            image_url: undefined,
+            brand: undefined,
             created_at: '',
+            is_favorite: 0,
         }
 
         act(() => {
@@ -126,12 +127,13 @@ describe('useWardrobeStore', () => {
             id: 1,
             user_id: 1,
             name: 'Test Shirt',
-            category: '上衣',
+            category: 'tops' as const,
             color: 'blue',
             season: 'summer',
-            image_url: null,
-            brand: null,
+            image_url: undefined,
+            brand: undefined,
             created_at: '',
+            is_favorite: 0,
         }
 
         act(() => {
@@ -148,12 +150,13 @@ describe('useWardrobeStore', () => {
             id: 1,
             user_id: 1,
             name: 'Test Shirt',
-            category: '上衣',
+            category: 'tops' as const,
             color: 'blue',
             season: 'summer',
-            image_url: null,
-            brand: null,
+            image_url: undefined,
+            brand: undefined,
             created_at: '',
+            is_favorite: 0,
         }
 
         act(() => {
@@ -180,7 +183,8 @@ describe('useOutfitStore', () => {
             description: 'Test',
             occasion: 'casual',
             season: 'summer',
-            is_public: false,
+            is_public: 0,
+            likes_count: 0,
             items: [],
             created_at: '',
         }
@@ -201,7 +205,8 @@ describe('useOutfitStore', () => {
             description: 'Test',
             occasion: 'casual',
             season: 'summer',
-            is_public: false,
+            is_public: 0,
+            likes_count: 0,
             items: [],
             created_at: '',
         }
@@ -223,7 +228,8 @@ describe('useOutfitStore', () => {
             description: 'Test',
             occasion: 'casual',
             season: 'summer',
-            is_public: false,
+            is_public: 0,
+            likes_count: 0,
             items: [],
             created_at: '',
         }

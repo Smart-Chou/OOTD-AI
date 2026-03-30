@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Sparkles, SlidersHorizontal, RefreshCw, ChevronRight, CheckCircle } from 'lucide-react'
-import { Button, Slider, Radio, Tag, Spin } from '@arco-design/web-react'
+import { Button, Slider, Spin } from '@arco-design/web-react'
 import OutfitCard from '../components/OutfitCard'
 
 interface RecommendationPageProps {
@@ -69,7 +69,7 @@ const OCCASIONS = ['全部场合', '通勤', '休闲', '约会', '运动', '商�
 const STYLES = ['全部风格', '简约', '随性', '优雅', '运动', '正式', '休闲']
 
 const RecommendationPage = ({ onNavigate = () => {} }: RecommendationPageProps) => {
-    const [outfits, setOutfits] = useState(DEFAULT_UTFITS)
+    const [outfits] = useState(DEFAULT_UTFITS)
     const [activeOccasion, setActiveOccasion] = useState('全部场合')
     const [activeStyle, setActiveStyle] = useState('全部风格')
     const [isGenerating, setIsGenerating] = useState(false)

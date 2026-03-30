@@ -1,48 +1,20 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import {
-    Layout,
-    Menu,
-    Button,
-    Avatar,
-    Dropdown,
-    ConfigProvider,
-    Grid,
-} from '@arco-design/web-react'
-import { User, LayoutDashboard, Ruler, Shirt, Palette, Heart, LogOut } from 'lucide-react'
+import { Layout, Menu, Button, Avatar, Dropdown, ConfigProvider } from '@arco-design/web-react'
+import { User, LayoutDashboard, Shirt, Palette, Heart, LogOut } from 'lucide-react'
 import { useAuthStore } from '../../stores'
 import { useNavigate, useLocation } from 'react-router-dom'
 
 const { Header, Sider, Content } = Layout
-const { Row, Col } = Grid
+const { Item: MenuItem } = Menu
 
 const MainLayout: React.FC = () => {
     const { isAuthenticated, user, logout } = useAuthStore()
     const navigate = useNavigate()
     const location = useLocation()
 
-    const menuItems = [
-        { key: '/dashboard', icon: <LayoutDashboard size={16} />, label: 'Dashboard' },
-        { key: '/body-data', icon: <User size={16} />, label: '体型数据' },
-        { key: '/wardrobe', icon: <Shirt size={16} />, label: '衣橱管理' },
-        { key: '/outfits', icon: <Palette size={16} />, label: '搭配方案' },
-        { key: '/recommendations', icon: <Heart size={16} />, label: '智能推荐' },
-    ]
-
-    const userMenuItems = [
-        { key: 'profile', label: '个人资料' },
-        { key: 'logout', icon: <LogOut size={14} />, label: '退出登录', danger: true },
-    ]
-
-    const handleMenuClick = ({ key }: { key: string }) => {
+    const handleMenuClick = (key: string) => {
         navigate(key)
-    }
-
-    const handleUserMenuClick = ({ key }: { key: string }) => {
-        if (key === 'logout') {
-            logout()
-            navigate('/login')
-        }
     }
 
     return (
@@ -66,9 +38,24 @@ const MainLayout: React.FC = () => {
                         <Menu
                             mode="vertical"
                             selectedKeys={[location.pathname]}
-                            data={menuItems}
                             onClickMenuItem={handleMenuClick}
-                        />
+                        >
+                            <MenuItem key="/dashboard">
+                                <LayoutDashboard size={16} /> Dashboard
+                            </MenuItem>
+                            <MenuItem key="/body-data">
+                                <User size={16} /> 体型数据
+                            </MenuItem>
+                            <MenuItem key="/wardrobe">
+                                <Shirt size={16} /> 衣橱管理
+                            </MenuItem>
+                            <MenuItem key="/outfits">
+                                <Palette size={16} /> 搭配方案
+                            </MenuItem>
+                            <MenuItem key="/recommendations">
+                                <Heart size={16} /> 智能推荐
+                            </MenuItem>
+                        </Menu>
                     </Sider>
                 )}
                 <Layout>
@@ -84,10 +71,26 @@ const MainLayout: React.FC = () => {
                     >
                         {isAuthenticated ? (
                             <Dropdown
-                                droplist={{
-                                    children: userMenuItems,
-                                    onClick: handleUserMenuClick,
-                                }}
+                                droplist={
+                                    <Menu>
+                                        <MenuItem
+                                            key="profile"
+                                            onClick={() => navigate('/profile')}
+                                        >
+                                            个人资料
+                                        </MenuItem>
+                                        <MenuItem
+                                            key="logout"
+                                            onClick={() => {
+                                                logout()
+                                                navigate('/login')
+                                            }}
+                                            style={{ color: '#d63c32' }}
+                                        >
+                                            <LogOut size={14} /> 退出登录
+                                        </MenuItem>
+                                    </Menu>
+                                }
                                 position="bl"
                             >
                                 <Button

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Card, Row, Col, Typography, Grid } from '@arco-design/web-react'
+import { Card, Typography, Grid } from '@arco-design/web-react'
 import { User, Shirt, Palette } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthStore, useWardrobeStore, useOutfitStore } from '../stores'
@@ -121,7 +121,7 @@ const DashboardPage: React.FC = () => {
                 快速操作
             </Title>
             <GridRow gutter={[16, 16]}>
-                {quickActions.map((action, index) => (
+                {quickActions.map(action => (
                     <GridCol xs={24} sm={8} key={action.key}>
                         <QuickAction
                             icon={action.icon}

@@ -281,7 +281,7 @@ const OutfitsPage: React.FC = () => {
                     form.resetFields()
                 }}
                 footer={null}
-                width={600}
+                style={{ width: 600 }}
             >
                 <Form form={form} layout="vertical" onSubmit={handleSubmit}>
                     <Form.Item
@@ -331,7 +331,7 @@ const OutfitsPage: React.FC = () => {
                             ))}
                         </Select>
                     </Form.Item>
-                    <Form.Item label="公开" field="is_public" valuePropName="checked">
+                    <Form.Item label="公开" field="is_public">
                         <Switch />
                     </Form.Item>
                     <Form.Item>
@@ -354,7 +354,7 @@ const OutfitsPage: React.FC = () => {
                 visible={viewModalVisible}
                 onCancel={() => setViewModalVisible(false)}
                 footer={null}
-                width={600}
+                style={{ width: 600 }}
             >
                 <p>
                     <strong>描述:</strong> {viewingOutfit?.description}

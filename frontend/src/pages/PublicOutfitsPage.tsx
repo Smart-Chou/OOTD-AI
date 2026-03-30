@@ -46,7 +46,7 @@ const PublicOutfitsPage: React.FC = () => {
 
     return (
         <div className="min-h-screen bg-background">
-            <div style={{ width: '1440px', margin: '0 auto' }} className="px-12 py-8">
+            <div className="container-main py-8">
                 <div className="flex items-center gap-4 mb-8">
                     <Button
                         icon={<ArrowLeft size={18} />}
@@ -94,9 +94,7 @@ const PublicOutfitsPage: React.FC = () => {
                                                 justifyContent: 'center',
                                             }}
                                         >
-                                            <Text style={{ color: 'white', fontSize: 48 }}>
-                                                👔
-                                            </Text>
+                                            <Text style={{ color: 'white', fontSize: 48 }}>👔</Text>
                                         </div>
                                     )
                                 }

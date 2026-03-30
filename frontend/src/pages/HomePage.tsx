@@ -68,10 +68,7 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
         <div className="min-h-screen bg-background">
             {/* Hero Section */}
             <section className="relative overflow-hidden">
-                <div
-                    className="gradient-hero py-24 px-12"
-                    style={{ width: '1440px', margin: '0 auto' }}
-                >
+                <div className="gradient-hero py-24 container-main">
                     <div className="flex items-center gap-16">
                         {/* Left Content */}
                         <div className="flex-1 max-w-xl">
@@ -198,7 +195,7 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
 
             {/* Stats Section */}
             <section className="bg-card border-b border-border">
-                <div style={{ width: '1440px', margin: '0 auto' }} className="px-12 py-10">
+                <div className="container-main py-10">
                     <div className="flex items-center justify-around">
                         {[
                             { title: '注册用户', value: 128000, suffix: '+', prefix: '' },
@@ -221,7 +218,7 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
             </section>
 
             {/* Features Section */}
-            <section className="py-20 px-12" style={{ width: '1440px', margin: '0 auto' }}>
+            <section className="py-20 container-main">
                 <div className="text-center mb-14">
                     <div className="inline-flex items-center gap-2 tag-pill mb-4 text-sm">
                         <Zap className="w-3.5 h-3.5" />
@@ -256,7 +253,7 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
             </section>
 
             {/* Occasions Section */}
-            <section className="py-16 px-12 bg-muted" style={{ width: '1440px', margin: '0 auto' }}>
+            <section className="py-16 container-main bg-muted">
                 <div className="text-center mb-10">
                     <h2 className="section-title text-2xl mb-2">覆盖全场景穿搭</h2>
                     <p className="text-muted-foreground text-sm">
@@ -277,7 +274,7 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
             </section>
 
             {/* Testimonials */}
-            <section className="py-20 px-12" style={{ width: '1440px', margin: '0 auto' }}>
+            <section className="py-20 container-main">
                 <div className="text-center mb-12">
                     <h2 className="section-title text-2xl mb-2">用户真实评价</h2>
                     <p className="text-muted-foreground text-sm">来自真实用户的穿搭故事</p>
@@ -318,10 +315,7 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
             </section>
 
             {/* CTA Section */}
-            <section
-                className="py-20 px-12 gradient-hero"
-                style={{ width: '1440px', margin: '0 auto' }}
-            >
+            <section className="py-20 gradient-hero container-main">
                 <div className="text-center">
                     <h2 className="text-3xl font-bold text-primary-foreground mb-4">
                         准备好改变你的穿搭了吗？
@@ -351,10 +345,7 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
             </section>
 
             {/* Footer */}
-            <footer
-                className="bg-card border-t border-border py-8 px-12"
-                style={{ width: '1440px', margin: '0 auto' }}
-            >
+            <footer className="bg-card border-t border-border py-8 container-main">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                         <span className="text-lg font-bold text-foreground">穿搭助手</span>

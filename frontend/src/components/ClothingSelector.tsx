@@ -12,7 +12,7 @@ export interface ClothingItem {
 }
 
 interface ClothingSelectorProps {
-    selectedId?: string
+    selectedId?: string | number
     onSelect?: (item: ClothingItem) => void
 }
 
@@ -126,7 +126,7 @@ const ClothingSelector = ({ selectedId = '', onSelect = () => {} }: ClothingSele
             {/* Clothing Grid */}
             <div className="flex flex-col gap-2" style={{ maxHeight: '400px', overflowY: 'auto' }}>
                 {filtered.map(item => {
-                    const isSelected = selectedId === item.id
+                    const isSelected = String(selectedId) === String(item.id)
                     return (
                         <button
                             key={item.id}

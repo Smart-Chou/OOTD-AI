@@ -7,6 +7,8 @@
 export {}
 declare global {
     const Activity: typeof import('react').Activity
+    const AlertCircle: typeof import('lucide-react').AlertCircle
+    const ArrowLeft: typeof import('lucide-react').ArrowLeft
     const ArrowRight: typeof import('lucide-react').ArrowRight
     const Award: typeof import('lucide-react').Award
     const Badge: typeof import('lucide-react').Badge
@@ -22,6 +24,7 @@ declare global {
     const Edit: typeof import('lucide-react').Edit
     const Eye: typeof import('lucide-react').Eye
     const File: typeof import('lucide-react').File
+    const FileUp: typeof import('lucide-react').FileUp
     const Filter: typeof import('lucide-react').Filter
     const Form: typeof import('lucide-react').Form
     const FormInput: typeof import('lucide-react').FormInput
@@ -31,11 +34,15 @@ declare global {
     const Heart: typeof import('lucide-react').Heart
     const Icon: typeof import('lucide-react').Icon
     const Image: typeof import('lucide-react').Image
+    const Import: typeof import('lucide-react').Import
     const Info: typeof import('lucide-react').Info
     const Layout: typeof import('lucide-react').Layout
     const LayoutDashboard: typeof import('lucide-react').LayoutDashboard
+    const Link: typeof import('lucide-react').Link
+    const LinkIcon: typeof import('lucide-react').LinkIcon
     const List: typeof import('lucide-react').List
     const Lock: typeof import('lucide-react').Lock
+    const LogIn: typeof import('lucide-react').LogIn
     const LogOut: typeof import('lucide-react').LogOut
     const Mail: typeof import('lucide-react').Mail
     const Menu: typeof import('lucide-react').Menu
@@ -52,6 +59,7 @@ declare global {
     const Search: typeof import('lucide-react').Search
     const Section: typeof import('lucide-react').Section
     const Settings: typeof import('lucide-react').Settings
+    const Share: typeof import('lucide-react').Share
     const Share2: typeof import('lucide-react').Share2
     const Shield: typeof import('lucide-react').Shield
     const Shirt: typeof import('lucide-react').Shirt
@@ -67,6 +75,7 @@ declare global {
     const TrendingUp: typeof import('lucide-react').TrendingUp
     const Upload: typeof import('lucide-react').Upload
     const User: typeof import('lucide-react').User
+    const UserPlus: typeof import('lucide-react').UserPlus
     const Users: typeof import('lucide-react').Users
     const View: typeof import('lucide-react').View
     const Wand2: typeof import('lucide-react').Wand2

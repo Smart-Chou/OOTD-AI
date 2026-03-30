@@ -199,6 +199,22 @@
         border-radius: 1px;
     }
 
+    /* Container for max-width support */
+    .container-main {
+        width: 100%;
+        max-width: 1440px;
+        margin: 0 auto;
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+
+    @media (min-width: 1024px) {
+        .container-main {
+            padding-left: 3rem;
+            padding-right: 3rem;
+        }
+    }
+
     .section-title {
         @apply text-2xl font-bold text-foreground;
         letter-spacing: -0.02em;
