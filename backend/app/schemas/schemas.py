@@ -154,3 +154,18 @@ class OutfitResponse(OutfitBase):
 
     class Config:
         from_attributes = True
+
+
+# Refresh Token schemas
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+
+class RefreshTokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+    expires_in: int  # seconds
+
+
+class TokenRevokeRequest(BaseModel):
+    refresh_token: str

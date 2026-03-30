@@ -1,7 +1,6 @@
-import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { ConfigProvider } from 'antd'
+import { ConfigProvider } from '@arco-design/web-react'
 
 // Layout
 import Header from './components/Header'
@@ -91,30 +90,27 @@ const App: React.FC = () => {
         <QueryClientProvider client={queryClient}>
             <ConfigProvider
                 theme={{
-                    token: {
-                        colorPrimary: '#2D503C',
-                        borderRadius: 6,
-                    },
+                    primaryColor: '#2D503C',
                 }}
             >
                 <BrowserRouter>
-                    <Routes>
-                        {/* Public Routes */}
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/register" element={<RegisterPage />} />
+                        <Routes>
+                            {/* Public Routes */}
+                            <Route path="/login" element={<LoginPage />} />
+                            <Route path="/register" element={<RegisterPage />} />
 
-                        {/* Protected Routes with Layout */}
-                        <Route
-                            path="/*"
-                            element={
-                                <ProtectedRoute>
-                                    <AppLayout />
-                                </ProtectedRoute>
-                            }
-                        />
-                    </Routes>
-                </BrowserRouter>
-            </ConfigProvider>
+                            {/* Protected Routes with Layout */}
+                            <Route
+                                path="/*"
+                                element={
+                                    <ProtectedRoute>
+                                        <AppLayout />
+                                    </ProtectedRoute>
+                                }
+                            />
+                        </Routes>
+                    </BrowserRouter>
+                </ConfigProvider>
         </QueryClientProvider>
     )
 }

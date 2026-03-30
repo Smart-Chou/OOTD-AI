@@ -54,13 +54,25 @@ class Settings(BaseSettings):
 
     @property
     def jwt_secret_key(self) -> str:
-        """Get JWT secret key, ensure it's set."""
+        """Get JWT secret key, ensure it's set in production."""
         key = self.JWT_SECRET_KEY or os.environ.get("JWT_SECRET_KEY", "")
+
+        # 生产环境必须设置有效的密钥
+        if not self.DEBUG:
+            if not key or key in ["", "your-secret-key-change-in-production", "dev-only-secret-key-change-in-production"]:
+                raise ValueError(
+                    "JWT_SECRET_KEY must be set in production! "
+                    "Please set a strong, unique secret key in your environment variables."
+                )
+            # 验证密钥长度
+            if len(key) < 32:
+                raise ValueError("JWT_SECRET_KEY must be at least 32 characters long in production!")
+            return key
+
+        # 开发环境警告
         if not key or key == "your-secret-key-change-in-production":
-            # Generate a warning but allow development mode
-            if self.DEBUG:
-                return "dev-only-secret-key-change-in-production"
-            raise ValueError("JWT_SECRET_KEY must be set in production")
+            return "dev-only-secret-key-change-in-production"
+
         return key
 
     @property

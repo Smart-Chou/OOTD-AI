@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Form, Input, Button, Card, Typography } from 'antd'
 import { UserOutlined, LockOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
-import { authApi } from '../services/api'
+import { authApi, tokenManager } from '../services/api'
 import { useAuthStore } from '../stores'
 import { useMessage } from '../hooks/useMessage'
 
@@ -22,9 +22,10 @@ const LoginPage: React.FC = () => {
             formData.append('password', values.password)
 
             const response = await authApi.login(formData.toString())
-            const { access_token } = response.data
+            const { access_token, refresh_token, expires_in } = response.data
 
-            localStorage.setItem('token', access_token)
+            // 使用 tokenManager 存储 token
+            tokenManager.setTokens(access_token, refresh_token, expires_in)
             setToken(access_token)
 
             // Fetch user info

@@ -4,6 +4,8 @@ import PhotoUploader from '../components/PhotoUploader'
 import ClothingSelector, { ClothingItem } from '../components/ClothingSelector'
 import TryOnProgress from '../components/TryOnProgress'
 import TryOnResult from '../components/TryOnResult'
+import { tryOnApi } from '../services/api'
+import { message } from 'antd'
 
 type StepType = 'upload' | 'select' | 'generating' | 'result'
 
@@ -24,6 +26,7 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
     const [selectedClothing, setSelectedClothing] = useState<ClothingItem | null>(null)
     const [progress, setProgress] = useState(0)
     const [activeTip, setActiveTip] = useState(0)
+    const [resultImageUrl, setResultImageUrl] = useState<string | null>(null)
 
     // Rotate tips
     useEffect(() => {
@@ -67,10 +70,54 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
         console.log('VirtualTryOn: 选择服装', item.name)
     }
 
-    const handleGenerate = () => {
+    const handleGenerate = async () => {
         if (!photoUrl || !selectedClothing) return
         setStep('generating')
         console.log('VirtualTryOn: 开始生成 -', selectedClothing.name)
+
+        try {
+            // Convert photo to base64
+            const response = await fetch(photoUrl)
+            const blob = await response.blob()
+            const base64 = await new Promise<string>((resolve) => {
+                const reader = new FileReader()
+                reader.onloadend = () => {
+                    const result = reader.result as string
+                    // Remove data URL prefix
+                    resolve(result.split(',')[1])
+                }
+                reader.readAsDataURL(blob)
+            })
+
+            // Call AI try-on API
+            const apiResponse = await tryOnApi.generateTryOn(base64, selectedClothing.id)
+
+            if (apiResponse.data.status === 'completed' && apiResponse.data.result_image_url) {
+                setResultImageUrl(apiResponse.data.result_image_url)
+                setStep('result')
+            } else if (apiResponse.data.status === 'processing') {
+                // Poll for status
+                const pollInterval = setInterval(async () => {
+                    const statusResponse = await tryOnApi.checkStatus(apiResponse.data.generation_id)
+                    if (statusResponse.data.status === 'completed' && statusResponse.data.result_image_url) {
+                        clearInterval(pollInterval)
+                        setResultImageUrl(statusResponse.data.result_image_url)
+                        setStep('result')
+                    } else if (statusResponse.data.status === 'failed') {
+                        clearInterval(pollInterval)
+                        message.error('虚拟试穿生成失败，请重试')
+                        setStep('select')
+                    }
+                }, 2000)
+            } else {
+                message.error(apiResponse.data.message || '生成失败')
+                setStep('select')
+            }
+        } catch (error) {
+            console.error('VirtualTryOn error:', error)
+            message.error('生成失败，请重试')
+            setStep('select')
+        }
     }
 
     const handleGenerationComplete = useCallback(() => {
@@ -81,6 +128,7 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
     const handleRetry = () => {
         setStep('select')
         setProgress(0)
+        setResultImageUrl(null)
         console.log('VirtualTryOn: 重新生成')
     }
 
@@ -89,6 +137,7 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
         setPhotoUrl(null)
         setSelectedClothing(null)
         setProgress(0)
+        setResultImageUrl(null)
     }
 
     const canGenerate = !!photoUrl && !!selectedClothing
@@ -350,7 +399,7 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
                             <div className="bg-card rounded-2xl p-6 shadow-custom border border-border">
                                 <TryOnResult
                                     originalUrl={photoUrl ?? ''}
-                                    resultUrl={''}
+                                    resultUrl={resultImageUrl ?? ''}
                                     clothingName={selectedClothing?.name ?? ''}
                                     onRetry={handleRetry}
                                 />

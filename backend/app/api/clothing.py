@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File, Request
 from sqlalchemy.orm import Session
 from typing import List
 import uuid
@@ -8,6 +8,7 @@ from app.core.database import get_db
 from app.models.models import User, ClothingItem
 from app.schemas.schemas import ClothingCreate, ClothingUpdate, ClothingResponse
 from app.api.auth import get_current_user
+from app.middleware.rate_limit import limiter, UPLOAD_RATE_LIMIT
 
 router = APIRouter()
 
@@ -94,7 +95,9 @@ def delete_clothing(
 
 
 @router.post("/upload")
+@limiter.limit(UPLOAD_RATE_LIMIT)
 async def upload_clothing_image(
+    request: Request,
     file: UploadFile = File(...),
     current_user: User = Depends(get_current_user)
 ):

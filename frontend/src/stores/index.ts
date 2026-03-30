@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import type { User, BodyData, ClothingItem, Outfit } from '../types'
+import { tokenManager } from '../services/api'
 
 interface AuthState {
     user: User | null
@@ -19,7 +20,10 @@ export const useAuthStore = create<AuthState>()(
             isAuthenticated: false,
             setUser: user => set({ user, isAuthenticated: !!user }),
             setToken: token => set({ token }),
-            logout: () => set({ user: null, token: null, isAuthenticated: false }),
+            logout: () => {
+                tokenManager.clearTokens()
+                set({ user: null, token: null, isAuthenticated: false })
+            },
         }),
         {
             name: 'auth-storage',

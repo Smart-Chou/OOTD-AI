@@ -109,3 +109,18 @@ class OutfitItem(Base):
 
     outfit = relationship("Outfit", back_populates="items")
     clothing = relationship("ClothingItem", back_populates="outfit_items")
+
+
+class RefreshToken(Base):
+    """Refresh Token 存储表"""
+    __tablename__ = "refresh_tokens"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    token = Column(String(500), unique=True, index=True, nullable=False)
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    is_revoked = Column(Integer, default=0)  # 0=有效, 1=已撤销
+    device_info = Column(String(255))  # 设备信息（可选）
+
+    user = relationship("User")
