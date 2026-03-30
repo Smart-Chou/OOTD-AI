@@ -1,12 +1,5 @@
 import axios from 'axios'
-import type {
-    LoginRequest,
-    RegisterRequest,
-    User,
-    BodyData,
-    ClothingItem,
-    Outfit,
-} from '../types'
+import type { LoginRequest, RegisterRequest, User, BodyData, ClothingItem, Outfit } from '../types'
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '/api/v1'
 
@@ -30,10 +23,10 @@ api.interceptors.request.use(config => {
 export const authApi = {
     login: (data: LoginRequest) =>
         api.post<{
-            access_token: string;
-            refresh_token: string;
-            token_type: string;
-            expires_in: number;
+            access_token: string
+            refresh_token: string
+            token_type: string
+            expires_in: number
         }>('/auth/login', data, {
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         }),
@@ -90,7 +83,8 @@ api.interceptors.response.use(
                     refreshToken,
                     response.data.expires_in
                 )
-                api.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
+                api.defaults.headers.common['Authorization'] =
+                    `Bearer ${response.data.access_token}`
                 originalRequest.headers['Authorization'] = `Bearer ${response.data.access_token}`
                 return api(originalRequest)
             } catch {
@@ -147,20 +141,20 @@ export const outfitApi = {
 export const tryOnApi = {
     generateTryOn: (userPhotoBase64: string, clothingItemId: number) =>
         api.post<{
-            generation_id: string;
-            status: string;
-            result_image_url: string | null;
-            message: string;
+            generation_id: string
+            status: string
+            result_image_url: string | null
+            message: string
         }>('/recommendations/virtual-tryon', {
             user_photo_base64: userPhotoBase64,
             clothing_item_id: clothingItemId,
         }),
     checkStatus: (generationId: string) =>
         api.get<{
-            generation_id: string;
-            status: string;
-            result_image_url: string | null;
-            message: string;
+            generation_id: string
+            status: string
+            result_image_url: string | null
+            message: string
         }>(`/recommendations/virtual-tryon/${generationId}/status`),
 }
 
@@ -168,22 +162,24 @@ export const tryOnApi = {
 export const bulkApi = {
     importClothing: (csvData: string) =>
         api.post<{
-            success: boolean;
-            imported_count: number;
-            total_errors: number;
-            errors: string[];
+            success: boolean
+            imported_count: number
+            total_errors: number
+            errors: string[]
         }>('/bulk/clothing-items/import', { csv_data: csvData }),
     exportClothing: (category?: string) =>
-        api.get('/bulk/clothing-items/export', { params: { category }, responseType: 'blob' as const }),
+        api.get('/bulk/clothing-items/export', {
+            params: { category },
+            responseType: 'blob' as const,
+        }),
     importOutfits: (csvData: string) =>
         api.post<{
-            success: boolean;
-            imported_count: number;
-            total_errors: number;
-            errors: string[];
+            success: boolean
+            imported_count: number
+            total_errors: number
+            errors: string[]
         }>('/bulk/outfits/import', { csv_data: csvData }),
-    exportOutfits: () =>
-        api.get('/bulk/outfits/export', { responseType: 'blob' as const }),
+    exportOutfits: () => api.get('/bulk/outfits/export', { responseType: 'blob' as const }),
 }
 
 export default api

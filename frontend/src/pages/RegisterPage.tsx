@@ -22,7 +22,10 @@ const RegisterPage: React.FC = () => {
             const user = response.data
 
             // Auto login after register
-            const loginResponse = await authApi.login({ username: values.username, password: values.password })
+            const loginResponse = await authApi.login({
+                username: values.username,
+                password: values.password,
+            })
             const { access_token } = loginResponse.data
 
             localStorage.setItem('token', access_token)

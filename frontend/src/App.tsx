@@ -92,24 +92,24 @@ const App: React.FC = () => {
                 }}
             >
                 <BrowserRouter>
-                        <Routes>
-                            {/* Public Routes */}
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/register" element={<RegisterPage />} />
-                            <Route path="/outfits/public" element={<PublicOutfitsPage />} />
+                    <Routes>
+                        {/* Public Routes */}
+                        <Route path="/login" element={<LoginPage />} />
+                        <Route path="/register" element={<RegisterPage />} />
+                        <Route path="/outfits/public" element={<PublicOutfitsPage />} />
 
-                            {/* Protected Routes with Layout */}
-                            <Route
-                                path="/*"
-                                element={
-                                    <ProtectedRoute>
-                                        <AppLayout />
-                                    </ProtectedRoute>
-                                }
-                            />
-                        </Routes>
-                    </BrowserRouter>
-                </ConfigProvider>
+                        {/* Protected Routes with Layout */}
+                        <Route
+                            path="/*"
+                            element={
+                                <ProtectedRoute>
+                                    <AppLayout />
+                                </ProtectedRoute>
+                            }
+                        />
+                    </Routes>
+                </BrowserRouter>
+            </ConfigProvider>
         </QueryClientProvider>
     )
 }

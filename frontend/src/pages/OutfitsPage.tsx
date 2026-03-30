@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Table, Button, Modal, Form, Input, Select, Switch, Typography, Grid, Message } from '@arco-design/web-react'
+import {
+    Card,
+    Table,
+    Button,
+    Modal,
+    Form,
+    Input,
+    Select,
+    Switch,
+    Typography,
+    Grid,
+    Message,
+} from '@arco-design/web-react'
 import { Plus, Edit, Trash2, Eye, Share2, Link as LinkIcon } from 'lucide-react'
 import { outfitApi, wardrobeApi } from '../services/api'
 import { useOutfitStore } from '../stores'
@@ -192,13 +204,41 @@ const OutfitsPage: React.FC = () => {
             render: (_: any, record: Outfit) => (
                 <div style={{ display: 'flex', gap: 8 }}>
                     {!record.is_public ? (
-                        <Button size="mini" type="text" icon={<LinkIcon size={14} />} onClick={() => handleMakePublic(record)} title="公开" />
+                        <Button
+                            size="mini"
+                            type="text"
+                            icon={<LinkIcon size={14} />}
+                            onClick={() => handleMakePublic(record)}
+                            title="公开"
+                        />
                     ) : (
-                        <Button size="mini" type="text" icon={<Share2 size={14} />} onClick={() => handleShare(record)} title="分享" />
+                        <Button
+                            size="mini"
+                            type="text"
+                            icon={<Share2 size={14} />}
+                            onClick={() => handleShare(record)}
+                            title="分享"
+                        />
                     )}
-                    <Button size="mini" type="text" icon={<Eye size={14} />} onClick={() => handleView(record)} />
-                    <Button size="mini" type="text" icon={<Edit size={14} />} onClick={() => handleEdit(record)} />
-                    <Button size="mini" type="text" status="danger" icon={<Trash2 size={14} />} onClick={() => handleDelete(record.id)} />
+                    <Button
+                        size="mini"
+                        type="text"
+                        icon={<Eye size={14} />}
+                        onClick={() => handleView(record)}
+                    />
+                    <Button
+                        size="mini"
+                        type="text"
+                        icon={<Edit size={14} />}
+                        onClick={() => handleEdit(record)}
+                    />
+                    <Button
+                        size="mini"
+                        type="text"
+                        status="danger"
+                        icon={<Trash2 size={14} />}
+                        onClick={() => handleDelete(record.id)}
+                    />
                 </div>
             ),
         },
@@ -295,7 +335,13 @@ const OutfitsPage: React.FC = () => {
                         <Switch />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" loading={loading} long style={{ borderRadius: 8 }}>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={loading}
+                            long
+                            style={{ borderRadius: 8 }}
+                        >
                             {editingOutfit ? '更新' : '创建'}
                         </Button>
                     </Form.Item>
@@ -310,15 +356,23 @@ const OutfitsPage: React.FC = () => {
                 footer={null}
                 width={600}
             >
-                <p><strong>描述:</strong> {viewingOutfit?.description}</p>
-                <p><strong>场合:</strong> {viewingOutfit?.occasion}</p>
-                <p><strong>季节:</strong> {viewingOutfit?.season}</p>
+                <p>
+                    <strong>描述:</strong> {viewingOutfit?.description}
+                </p>
+                <p>
+                    <strong>场合:</strong> {viewingOutfit?.occasion}
+                </p>
+                <p>
+                    <strong>季节:</strong> {viewingOutfit?.season}
+                </p>
                 <div style={{ marginTop: 16 }}>
                     <strong>包含衣物:</strong>
                     <Row gutter={[8, 8]} style={{ marginTop: 8 }}>
                         {viewingOutfit?.items.map(item => (
                             <Col xs={12} sm={8} key={item.id}>
-                                <Card size="small" style={{ borderRadius: 8 }}>{item.name}</Card>
+                                <Card size="small" style={{ borderRadius: 8 }}>
+                                    {item.name}
+                                </Card>
                             </Col>
                         ))}
                     </Row>

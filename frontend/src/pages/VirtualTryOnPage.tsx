@@ -80,7 +80,7 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
             // Convert photo to base64
             const response = await fetch(photoUrl)
             const blob = await response.blob()
-            const base64 = await new Promise<string>((resolve) => {
+            const base64 = await new Promise<string>(resolve => {
                 const reader = new FileReader()
                 reader.onloadend = () => {
                     const result = reader.result as string
@@ -99,8 +99,13 @@ const VirtualTryOnPage = ({ onNavigate = () => {} }: VirtualTryOnPageProps) => {
             } else if (apiResponse.data.status === 'processing') {
                 // Poll for status
                 const pollInterval = setInterval(async () => {
-                    const statusResponse = await tryOnApi.checkStatus(apiResponse.data.generation_id)
-                    if (statusResponse.data.status === 'completed' && statusResponse.data.result_image_url) {
+                    const statusResponse = await tryOnApi.checkStatus(
+                        apiResponse.data.generation_id
+                    )
+                    if (
+                        statusResponse.data.status === 'completed' &&
+                        statusResponse.data.result_image_url
+                    ) {
                         clearInterval(pollInterval)
                         setResultImageUrl(statusResponse.data.result_image_url)
                         setStep('result')

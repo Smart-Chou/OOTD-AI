@@ -154,7 +154,12 @@ const BodyDataPage: React.FC = () => {
                     </Form.Item>
 
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" loading={loading} style={{ borderRadius: 8 }}>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            loading={loading}
+                            style={{ borderRadius: 8 }}
+                        >
                             {bodyData ? '更新数据' : '保存数据'}
                         </Button>
                     </Form.Item>

@@ -14,7 +14,14 @@ describe('useAuthStore', () => {
         const { result } = renderHook(() => useAuthStore())
 
         act(() => {
-            result.current.setUser({ id: 1, username: 'test', email: 'test@test.com', role: 'user', avatar_url: null, created_at: '' })
+            result.current.setUser({
+                id: 1,
+                username: 'test',
+                email: 'test@test.com',
+                role: 'user',
+                avatar_url: null,
+                created_at: '',
+            })
         })
 
         expect(result.current.user).toBeDefined()
@@ -35,7 +42,14 @@ describe('useAuthStore', () => {
         const { result } = renderHook(() => useAuthStore())
 
         act(() => {
-            result.current.setUser({ id: 1, username: 'test', email: 'test@test.com', role: 'user', avatar_url: null, created_at: '' })
+            result.current.setUser({
+                id: 1,
+                username: 'test',
+                email: 'test@test.com',
+                role: 'user',
+                avatar_url: null,
+                created_at: '',
+            })
             result.current.setToken('test-token')
             result.current.logout()
         })
@@ -86,7 +100,17 @@ describe('useWardrobeStore', () => {
 
     it('should add clothing item', () => {
         const { result } = renderHook(() => useWardrobeStore())
-        const mockClothing = { id: 1, user_id: 1, name: 'Test Shirt', category: '上衣', color: 'blue', season: 'summer', image_url: null, brand: null, created_at: '' }
+        const mockClothing = {
+            id: 1,
+            user_id: 1,
+            name: 'Test Shirt',
+            category: '上衣',
+            color: 'blue',
+            season: 'summer',
+            image_url: null,
+            brand: null,
+            created_at: '',
+        }
 
         act(() => {
             result.current.addClothing(mockClothing)
@@ -98,7 +122,17 @@ describe('useWardrobeStore', () => {
 
     it('should update clothing item', () => {
         const { result } = renderHook(() => useWardrobeStore())
-        const mockClothing = { id: 1, user_id: 1, name: 'Test Shirt', category: '上衣', color: 'blue', season: 'summer', image_url: null, brand: null, created_at: '' }
+        const mockClothing = {
+            id: 1,
+            user_id: 1,
+            name: 'Test Shirt',
+            category: '上衣',
+            color: 'blue',
+            season: 'summer',
+            image_url: null,
+            brand: null,
+            created_at: '',
+        }
 
         act(() => {
             result.current.addClothing(mockClothing)
@@ -110,7 +144,17 @@ describe('useWardrobeStore', () => {
 
     it('should remove clothing item', () => {
         const { result } = renderHook(() => useWardrobeStore())
-        const mockClothing = { id: 1, user_id: 1, name: 'Test Shirt', category: '上衣', color: 'blue', season: 'summer', image_url: null, brand: null, created_at: '' }
+        const mockClothing = {
+            id: 1,
+            user_id: 1,
+            name: 'Test Shirt',
+            category: '上衣',
+            color: 'blue',
+            season: 'summer',
+            image_url: null,
+            brand: null,
+            created_at: '',
+        }
 
         act(() => {
             result.current.addClothing(mockClothing)
@@ -129,7 +173,17 @@ describe('useOutfitStore', () => {
 
     it('should add outfit', () => {
         const { result } = renderHook(() => useOutfitStore())
-        const mockOutfit = { id: 1, user_id: 1, name: 'Test Outfit', description: 'Test', occasion: 'casual', season: 'summer', is_public: false, items: [], created_at: '' }
+        const mockOutfit = {
+            id: 1,
+            user_id: 1,
+            name: 'Test Outfit',
+            description: 'Test',
+            occasion: 'casual',
+            season: 'summer',
+            is_public: false,
+            items: [],
+            created_at: '',
+        }
 
         act(() => {
             result.current.addOutfit(mockOutfit)
@@ -140,7 +194,17 @@ describe('useOutfitStore', () => {
 
     it('should update outfit', () => {
         const { result } = renderHook(() => useOutfitStore())
-        const mockOutfit = { id: 1, user_id: 1, name: 'Test Outfit', description: 'Test', occasion: 'casual', season: 'summer', is_public: false, items: [], created_at: '' }
+        const mockOutfit = {
+            id: 1,
+            user_id: 1,
+            name: 'Test Outfit',
+            description: 'Test',
+            occasion: 'casual',
+            season: 'summer',
+            is_public: false,
+            items: [],
+            created_at: '',
+        }
 
         act(() => {
             result.current.addOutfit(mockOutfit)
@@ -152,7 +216,17 @@ describe('useOutfitStore', () => {
 
     it('should remove outfit', () => {
         const { result } = renderHook(() => useOutfitStore())
-        const mockOutfit = { id: 1, user_id: 1, name: 'Test Outfit', description: 'Test', occasion: 'casual', season: 'summer', is_public: false, items: [], created_at: '' }
+        const mockOutfit = {
+            id: 1,
+            user_id: 1,
+            name: 'Test Outfit',
+            description: 'Test',
+            occasion: 'casual',
+            season: 'summer',
+            is_public: false,
+            items: [],
+            created_at: '',
+        }
 
         act(() => {
             result.current.addOutfit(mockOutfit)

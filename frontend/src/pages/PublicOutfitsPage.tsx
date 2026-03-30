@@ -57,7 +57,9 @@ const PublicOutfitsPage: React.FC = () => {
                         返回
                     </Button>
                     <div>
-                        <Title heading={3} className="mb-0">公开穿搭</Title>
+                        <Title heading={3} className="mb-0">
+                            公开穿搭
+                        </Title>
                         <Text type="secondary">浏览其他用户分享的穿搭灵感</Text>
                     </div>
                 </div>
@@ -86,13 +88,16 @@ const PublicOutfitsPage: React.FC = () => {
                                             <div
                                                 style={{
                                                     height: 200,
-                                                    background: 'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                                                    background:
+                                                        'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
                                                     display: 'flex',
                                                     alignItems: 'center',
                                                     justifyContent: 'center',
                                                 }}
                                             >
-                                                <Text style={{ color: 'white', fontSize: 48 }}>👔</Text>
+                                                <Text style={{ color: 'white', fontSize: 48 }}>
+                                                    👔
+                                                </Text>
                                             </div>
                                         )
                                     }
@@ -133,8 +138,12 @@ const PublicOutfitsPage: React.FC = () => {
                             className="bg-card rounded-2xl p-8 shadow-hover max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto"
                             onClick={e => e.stopPropagation()}
                         >
-                            <h2 className="text-2xl font-bold text-foreground mb-2">{selectedOutfit.name}</h2>
-                            <p className="text-muted-foreground mb-4">{selectedOutfit.description}</p>
+                            <h2 className="text-2xl font-bold text-foreground mb-2">
+                                {selectedOutfit.name}
+                            </h2>
+                            <p className="text-muted-foreground mb-4">
+                                {selectedOutfit.description}
+                            </p>
 
                             <div className="flex gap-4 mb-6">
                                 <span className="px-3 py-1 bg-secondary rounded-full text-sm">

@@ -13,7 +13,10 @@ const LoginPage: React.FC = () => {
     const onFinish = async (values: { username: string; password: string }) => {
         setLoading(true)
         try {
-            const response = await authApi.login({ username: values.username, password: values.password })
+            const response = await authApi.login({
+                username: values.username,
+                password: values.password,
+            })
             const { access_token, refresh_token, expires_in } = response.data
 
             // 使用 tokenManager 存储 token

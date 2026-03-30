@@ -24,7 +24,9 @@ const QuickAction: React.FC<QuickActionProps> = ({ icon, title, desc, onClick })
         <div style={{ fontSize: 32, marginBottom: 12, color: 'var(--primary, #2D503C)' }}>
             {icon}
         </div>
-        <Title heading={5} style={{ margin: '8px 0 4px' }}>{title}</Title>
+        <Title heading={5} style={{ margin: '8px 0 4px' }}>
+            {title}
+        </Title>
         <Text type="secondary">{desc}</Text>
         <div style={{ marginTop: 12 }}>
             <span style={{ color: 'var(--primary, #2D503C)' }}>前往 →</span>
@@ -68,10 +70,15 @@ const DashboardPage: React.FC = () => {
                 <GridCol xs={24} sm={8}>
                     <Card style={{ borderRadius: 12 }} bodyStyle={{ padding: 20 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <Shirt className="w-6 h-6" style={{ color: 'var(--primary, #2D503C)' }} />
+                            <Shirt
+                                className="w-6 h-6"
+                                style={{ color: 'var(--primary, #2D503C)' }}
+                            />
                             <div>
                                 <Text type="secondary">衣物数量</Text>
-                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>{clothing.length}</div>
+                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>
+                                    {clothing.length}
+                                </div>
                             </div>
                         </div>
                     </Card>
@@ -79,10 +86,15 @@ const DashboardPage: React.FC = () => {
                 <GridCol xs={24} sm={8}>
                     <Card style={{ borderRadius: 12 }} bodyStyle={{ padding: 20 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <Palette className="w-6 h-6" style={{ color: 'var(--primary, #2D503C)' }} />
+                            <Palette
+                                className="w-6 h-6"
+                                style={{ color: 'var(--primary, #2D503C)' }}
+                            />
                             <div>
                                 <Text type="secondary">搭配方案</Text>
-                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>{outfits.length}</div>
+                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>
+                                    {outfits.length}
+                                </div>
                             </div>
                         </div>
                     </Card>
@@ -90,10 +102,15 @@ const DashboardPage: React.FC = () => {
                 <GridCol xs={24} sm={8}>
                     <Card style={{ borderRadius: 12 }} bodyStyle={{ padding: 20 }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                            <User className="w-6 h-6" style={{ color: 'var(--primary, #2D503C)' }} />
+                            <User
+                                className="w-6 h-6"
+                                style={{ color: 'var(--primary, #2D503C)' }}
+                            />
                             <div>
                                 <Text type="secondary">用户角色</Text>
-                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>{user?.role || 'user'}</div>
+                                <div style={{ fontSize: 24, fontWeight: 'bold' }}>
+                                    {user?.role || 'user'}
+                                </div>
                             </div>
                         </div>
                     </Card>

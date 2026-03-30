@@ -1,6 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import { Layout, Menu, Button, Avatar, Dropdown, ConfigProvider, Grid } from '@arco-design/web-react'
+import {
+    Layout,
+    Menu,
+    Button,
+    Avatar,
+    Dropdown,
+    ConfigProvider,
+    Grid,
+} from '@arco-design/web-react'
 import { User, LayoutDashboard, Ruler, Shirt, Palette, Heart, LogOut } from 'lucide-react'
 import { useAuthStore } from '../../stores'
 import { useNavigate, useLocation } from 'react-router-dom'
@@ -84,7 +92,13 @@ const MainLayout: React.FC = () => {
                             >
                                 <Button
                                     type="text"
-                                    style={{ height: 'auto', padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 8 }}
+                                    style={{
+                                        height: 'auto',
+                                        padding: '4px 8px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: 8,
+                                    }}
                                 >
                                     <Avatar size={32} style={{ backgroundColor: '#2D503C' }}>
                                         {user?.username?.[0]?.toUpperCase() || 'U'}

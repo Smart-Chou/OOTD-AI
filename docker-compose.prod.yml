@@ -68,8 +68,8 @@ services:
             - "443:443"
         volumes:
             - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
-            - ./ssl:/etc/letsencrypt:ro  # SSL certificates
-            - ./uploads:/app/uploads:ro   # Uploaded images
+            - ./ssl:/etc/letsencrypt:ro # SSL certificates
+            - ./uploads:/app/uploads:ro # Uploaded images
         depends_on:
             - frontend
             - backend
@@ -84,8 +84,8 @@ services:
             - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
             - prometheus_data:/prometheus
         command:
-            - '--config.file=/etc/prometheus/prometheus.yml'
-            - '--storage.tsdb.path=/prometheus'
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus"
         ports:
             - "9090:9090"
         restart: unless-stopped

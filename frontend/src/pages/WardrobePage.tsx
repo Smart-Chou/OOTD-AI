@@ -1,5 +1,15 @@
 import { useState, useEffect, useRef } from 'react'
-import { Plus, Search, Grid3X3, List, Upload, Shirt, Download, FileUp, AlertCircle } from 'lucide-react'
+import {
+    Plus,
+    Search,
+    Grid3X3,
+    List,
+    Upload,
+    Shirt,
+    Download,
+    FileUp,
+    AlertCircle,
+} from 'lucide-react'
 import {
     Button,
     Input,
@@ -50,7 +60,12 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
     const [showBulkModal, setShowBulkModal] = useState(false)
     const [csvInput, setCsvInput] = useState('')
     const [importing, setImporting] = useState(false)
-    const [importResult, setImportResult] = useState<{ success: boolean; imported_count: number; total_errors: number; errors: string[] } | null>(null)
+    const [importResult, setImportResult] = useState<{
+        success: boolean
+        imported_count: number
+        total_errors: number
+        errors: string[]
+    } | null>(null)
     const fileInputRef = useRef<HTMLInputElement>(null)
     const exportCategory = useRef<string>('')
 
@@ -65,10 +80,18 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
             if (response.data && response.data.length > 0) {
                 // Convert API response to local format
                 const categoryMap: Record<string, string> = {
-                    tops: '上衣', bottoms: '下装', outerwear: '外套', dresses: '连衣裙', shoes: '鞋子', accessories: '配件'
+                    tops: '上衣',
+                    bottoms: '下装',
+                    outerwear: '外套',
+                    dresses: '连衣裙',
+                    shoes: '鞋子',
+                    accessories: '配件',
                 }
                 const seasonMap: Record<string, string> = {
-                    spring: '春季', summer: '夏季', fall: '秋冬', winter: '冬季'
+                    spring: '春季',
+                    summer: '夏季',
+                    fall: '秋冬',
+                    winter: '冬季',
                 }
                 const converted = response.data.map((item: any) => ({
                     id: item.id,
@@ -76,7 +99,7 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
                     category: categoryMap[item.category] || item.category,
                     color: item.color || '',
                     season: seasonMap[item.season] || item.season || '',
-                    imageIndex: 0
+                    imageIndex: 0,
                 }))
                 setClothing(converted)
             }
@@ -130,7 +153,7 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
         if (!file) return
 
         const reader = new FileReader()
-        reader.onload = (event) => {
+        reader.onload = event => {
             const csvData = event.target?.result as string
             setCsvInput(csvData)
         }
@@ -410,19 +433,25 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
 
                             {/* CSV Template */}
                             <div className="bg-muted rounded-xl p-4 mb-4">
-                                <h4 className="text-sm font-semibold text-foreground mb-2">CSV格式 (header必填)</h4>
+                                <h4 className="text-sm font-semibold text-foreground mb-2">
+                                    CSV格式 (header必填)
+                                </h4>
                                 <code className="text-xs text-muted-foreground block">
                                     name,category,color,season,brand,size,tags
                                 </code>
-                                <h4 className="text-sm font-semibold text-foreground mt-3 mb-2">示例数据</h4>
+                                <h4 className="text-sm font-semibold text-foreground mt-3 mb-2">
+                                    示例数据
+                                </h4>
                                 <code className="text-xs text-muted-foreground block whitespace-pre-wrap">
-name,category,color,season,brand,size,tags
-T恤,TOPS,红色,spring,Uniqlo,M,休闲
-牛仔裤,BOTTOMS,蓝色,fall,Levis,30,百搭
+                                    name,category,color,season,brand,size,tags
+                                    T恤,TOPS,红色,spring,Uniqlo,M,休闲
+                                    牛仔裤,BOTTOMS,蓝色,fall,Levis,30,百搭
                                 </code>
-                                <h4 className="text-sm font-semibold text-foreground mt-3 mb-2">有效分类</h4>
+                                <h4 className="text-sm font-semibold text-foreground mt-3 mb-2">
+                                    有效分类
+                                </h4>
                                 <code className="text-xs text-muted-foreground block">
-TOPS, BOTTOMS, OUTERWEAR, DRESSES, SHOES, ACCESSORIES
+                                    TOPS, BOTTOMS, OUTERWEAR, DRESSES, SHOES, ACCESSORIES
                                 </code>
                             </div>
 
@@ -435,7 +464,10 @@ TOPS, BOTTOMS, OUTERWEAR, DRESSES, SHOES, ACCESSORIES
                                     onChange={handleFileImport}
                                     className="hidden"
                                 />
-                                <Button onClick={() => fileInputRef.current?.click()} style={{ borderRadius: '999px' }}>
+                                <Button
+                                    onClick={() => fileInputRef.current?.click()}
+                                    style={{ borderRadius: '999px' }}
+                                >
                                     <FileUp className="w-4 h-4 mr-2 inline" />
                                     选择CSV文件
                                 </Button>
@@ -454,16 +486,23 @@ TOPS, BOTTOMS, OUTERWEAR, DRESSES, SHOES, ACCESSORIES
 
                             {/* Import Result */}
                             {importResult && (
-                                <div className={`rounded-xl p-4 mb-4 ${importResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                                <div
+                                    className={`rounded-xl p-4 mb-4 ${importResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}
+                                >
                                     <div className="flex items-center gap-2 mb-2">
-                                        <AlertCircle className={`w-4 h-4 ${importResult.success ? 'text-green-600' : 'text-red-600'}`} />
-                                        <span className={`font-semibold ${importResult.success ? 'text-green-700' : 'text-red-700'}`}>
+                                        <AlertCircle
+                                            className={`w-4 h-4 ${importResult.success ? 'text-green-600' : 'text-red-600'}`}
+                                        />
+                                        <span
+                                            className={`font-semibold ${importResult.success ? 'text-green-700' : 'text-red-700'}`}
+                                        >
                                             {importResult.success ? '导入成功' : '导入部分成功'}
                                         </span>
                                     </div>
                                     <p className="text-sm text-muted-foreground">
                                         成功导入 {importResult.imported_count} 件衣物
-                                        {importResult.total_errors > 0 && `，${importResult.total_errors} 个错误`}
+                                        {importResult.total_errors > 0 &&
+                                            `，${importResult.total_errors} 个错误`}
                                     </p>
                                     {importResult.errors.length > 0 && (
                                         <div className="mt-2 text-xs text-red-600 max-h-20 overflow-y-auto">
@@ -477,7 +516,11 @@ TOPS, BOTTOMS, OUTERWEAR, DRESSES, SHOES, ACCESSORIES
 
                             <div className="flex gap-3">
                                 <Button
-                                    onClick={() => { setShowBulkModal(false); setCsvInput(''); setImportResult(null); }}
+                                    onClick={() => {
+                                        setShowBulkModal(false)
+                                        setCsvInput('')
+                                        setImportResult(null)
+                                    }}
                                     long
                                     style={{ borderRadius: '999px' }}
                                 >
