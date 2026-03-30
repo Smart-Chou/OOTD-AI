@@ -169,3 +169,20 @@ class RefreshTokenResponse(BaseModel):
 
 class TokenRevokeRequest(BaseModel):
     refresh_token: str
+
+
+# Bulk import/export schemas
+class CSVImportRequest(BaseModel):
+    csv_data: str  # CSV content as string
+
+
+class CSVImportResponse(BaseModel):
+    success: bool
+    imported_count: int
+    total_errors: int
+    errors: List[str] = []
+
+
+class CSVExportResponse(BaseModel):
+    total_count: int
+    categories: List[str] = []

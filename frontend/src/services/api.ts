@@ -164,4 +164,26 @@ export const tryOnApi = {
         }>(`/recommendations/virtual-tryon/${generationId}/status`),
 }
 
+// Bulk Import/Export API
+export const bulkApi = {
+    importClothing: (csvData: string) =>
+        api.post<{
+            success: boolean;
+            imported_count: number;
+            total_errors: number;
+            errors: string[];
+        }>('/bulk/clothing-items/import', { csv_data: csvData }),
+    exportClothing: (category?: string) =>
+        api.get('/bulk/clothing-items/export', { params: { category }, responseType: 'blob' as const }),
+    importOutfits: (csvData: string) =>
+        api.post<{
+            success: boolean;
+            imported_count: number;
+            total_errors: number;
+            errors: string[];
+        }>('/bulk/outfits/import', { csv_data: csvData }),
+    exportOutfits: () =>
+        api.get('/bulk/outfits/export', { responseType: 'blob' as const }),
+}
+
 export default api

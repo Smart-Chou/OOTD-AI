@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Plus, Search, Grid3X3, List, Upload, Shirt } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { Plus, Search, Grid3X3, List, Upload, Shirt, Download, FileUp, AlertCircle } from 'lucide-react'
 import {
     Button,
     Input,
@@ -8,8 +8,11 @@ import {
     Form,
     Input as FormInput,
     Select,
+    Message,
+    Notification,
 } from '@arco-design/web-react'
 import ClothingCard from '../components/ClothingCard'
+import { wardrobeApi, bulkApi } from '../services/api'
 
 interface WardrobePageProps {
     onNavigate?: (page: string) => void
@@ -44,6 +47,98 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
     const [searchQuery, setSearchQuery] = useState('')
     const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
     const [showUpload, setShowUpload] = useState(false)
+    const [showBulkModal, setShowBulkModal] = useState(false)
+    const [csvInput, setCsvInput] = useState('')
+    const [importing, setImporting] = useState(false)
+    const [importResult, setImportResult] = useState<{ success: boolean; imported_count: number; total_errors: number; errors: string[] } | null>(null)
+    const fileInputRef = useRef<HTMLInputElement>(null)
+    const exportCategory = useRef<string>('')
+
+    // Load clothing from API on mount
+    useEffect(() => {
+        loadClothing()
+    }, [])
+
+    const loadClothing = async () => {
+        try {
+            const response = await wardrobeApi.getClothingList()
+            if (response.data && response.data.length > 0) {
+                // Convert API response to local format
+                const categoryMap: Record<string, string> = {
+                    tops: '上衣', bottoms: '下装', outerwear: '外套', dresses: '连衣裙', shoes: '鞋子', accessories: '配件'
+                }
+                const seasonMap: Record<string, string> = {
+                    spring: '春季', summer: '夏季', fall: '秋冬', winter: '冬季'
+                }
+                const converted = response.data.map((item: any) => ({
+                    id: item.id,
+                    name: item.name,
+                    category: categoryMap[item.category] || item.category,
+                    color: item.color || '',
+                    season: seasonMap[item.season] || item.season || '',
+                    imageIndex: 0
+                }))
+                setClothing(converted)
+            }
+        } catch (error) {
+            console.log('Using default clothing data')
+        }
+    }
+
+    const handleImport = async () => {
+        if (!csvInput.trim()) {
+            Message.warning('请输入CSV数据')
+            return
+        }
+        setImporting(true)
+        setImportResult(null)
+        try {
+            const response = await bulkApi.importClothing(csvInput)
+            setImportResult(response.data)
+            if (response.data.success) {
+                Message.success(`成功导入 ${response.data.imported_count} 件衣物`)
+                loadClothing()
+            }
+        } catch (error: any) {
+            const errorMsg = error.response?.data?.detail || '导入失败'
+            Message.error(errorMsg)
+        } finally {
+            setImporting(false)
+        }
+    }
+
+    const handleExport = async (category?: string) => {
+        try {
+            const response = await bulkApi.exportClothing(category)
+            const blob = new Blob([response.data as any], { type: 'text/csv;charset=utf-8;' })
+            const url = window.URL.createObjectURL(blob)
+            const link = document.createElement('a')
+            link.href = url
+            link.download = `wardrobe_export${category ? '_' + category : ''}.csv`
+            document.body.appendChild(link)
+            link.click()
+            document.body.removeChild(link)
+            window.URL.revokeObjectURL(url)
+            Message.success('导出成功')
+        } catch (error) {
+            Message.error('导出失败')
+        }
+    }
+
+    const handleFileImport = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0]
+        if (!file) return
+
+        const reader = new FileReader()
+        reader.onload = (event) => {
+            const csvData = event.target?.result as string
+            setCsvInput(csvData)
+        }
+        reader.readAsText(file)
+        if (fileInputRef.current) {
+            fileInputRef.current.value = ''
+        }
+    }
 
     const filteredClothes = clothing.filter(item => {
         const matchCategory = activeCategory === '全部' || item.category === activeCategory
@@ -71,6 +166,26 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
                         </p>
                     </div>
                     <div className="flex items-center gap-3">
+                        <Button
+                            onClick={() => setShowBulkModal(true)}
+                            style={{
+                                borderRadius: '999px',
+                                borderColor: 'var(--border)',
+                            }}
+                        >
+                            <FileUp className="w-4 h-4 mr-2 inline" />
+                            批量导入
+                        </Button>
+                        <Button
+                            onClick={() => handleExport()}
+                            style={{
+                                borderRadius: '999px',
+                                borderColor: 'var(--border)',
+                            }}
+                        >
+                            <Download className="w-4 h-4 mr-2 inline" />
+                            导出CSV
+                        </Button>
                         <Button
                             onClick={() => setShowUpload(true)}
                             style={{
@@ -272,6 +387,114 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
                                     }}
                                 >
                                     确认上传
+                                </Button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Bulk Import Modal */}
+                {showBulkModal && (
+                    <div
+                        className="fixed inset-0 bg-foreground/20 backdrop-blur-sm flex items-center justify-center z-50"
+                        onClick={() => setShowBulkModal(false)}
+                    >
+                        <div
+                            className="bg-card rounded-2xl p-8 shadow-hover max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto"
+                            onClick={e => e.stopPropagation()}
+                        >
+                            <h2 className="text-xl font-bold text-foreground mb-2">批量导入衣物</h2>
+                            <p className="text-muted-foreground text-sm mb-4">
+                                请输入CSV格式数据，或上传CSV文件
+                            </p>
+
+                            {/* CSV Template */}
+                            <div className="bg-muted rounded-xl p-4 mb-4">
+                                <h4 className="text-sm font-semibold text-foreground mb-2">CSV格式 (header必填)</h4>
+                                <code className="text-xs text-muted-foreground block">
+                                    name,category,color,season,brand,size,tags
+                                </code>
+                                <h4 className="text-sm font-semibold text-foreground mt-3 mb-2">示例数据</h4>
+                                <code className="text-xs text-muted-foreground block whitespace-pre-wrap">
+name,category,color,season,brand,size,tags
+T恤,TOPS,红色,spring,Uniqlo,M,休闲
+牛仔裤,BOTTOMS,蓝色,fall,Levis,30,百搭
+                                </code>
+                                <h4 className="text-sm font-semibold text-foreground mt-3 mb-2">有效分类</h4>
+                                <code className="text-xs text-muted-foreground block">
+TOPS, BOTTOMS, OUTERWEAR, DRESSES, SHOES, ACCESSORIES
+                                </code>
+                            </div>
+
+                            {/* File Input */}
+                            <div className="mb-4">
+                                <input
+                                    ref={fileInputRef}
+                                    type="file"
+                                    accept=".csv"
+                                    onChange={handleFileImport}
+                                    className="hidden"
+                                />
+                                <Button onClick={() => fileInputRef.current?.click()} style={{ borderRadius: '999px' }}>
+                                    <FileUp className="w-4 h-4 mr-2 inline" />
+                                    选择CSV文件
+                                </Button>
+                            </div>
+
+                            {/* CSV Input */}
+                            <Form.Item label="或粘贴CSV数据">
+                                <FormInput.TextArea
+                                    value={csvInput}
+                                    onChange={setCsvInput}
+                                    placeholder="name,category,color,season,brand,size,tags&#10;T恤,TOPS,红色,spring,Uniqlo,M,休闲"
+                                    style={{ fontFamily: 'monospace', fontSize: '12px' }}
+                                    rows={8}
+                                />
+                            </Form.Item>
+
+                            {/* Import Result */}
+                            {importResult && (
+                                <div className={`rounded-xl p-4 mb-4 ${importResult.success ? 'bg-green-50 border border-green-200' : 'bg-red-50 border border-red-200'}`}>
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <AlertCircle className={`w-4 h-4 ${importResult.success ? 'text-green-600' : 'text-red-600'}`} />
+                                        <span className={`font-semibold ${importResult.success ? 'text-green-700' : 'text-red-700'}`}>
+                                            {importResult.success ? '导入成功' : '导入部分成功'}
+                                        </span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">
+                                        成功导入 {importResult.imported_count} 件衣物
+                                        {importResult.total_errors > 0 && `，${importResult.total_errors} 个错误`}
+                                    </p>
+                                    {importResult.errors.length > 0 && (
+                                        <div className="mt-2 text-xs text-red-600 max-h-20 overflow-y-auto">
+                                            {importResult.errors.map((err, idx) => (
+                                                <div key={idx}>{err}</div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            <div className="flex gap-3">
+                                <Button
+                                    onClick={() => { setShowBulkModal(false); setCsvInput(''); setImportResult(null); }}
+                                    long
+                                    style={{ borderRadius: '999px' }}
+                                >
+                                    取消
+                                </Button>
+                                <Button
+                                    type="primary"
+                                    loading={importing}
+                                    onClick={handleImport}
+                                    long
+                                    style={{
+                                        backgroundColor: 'var(--primary)',
+                                        borderColor: 'var(--primary)',
+                                        borderRadius: '999px',
+                                    }}
+                                >
+                                    开始导入
                                 </Button>
                             </div>
                         </div>

@@ -9,13 +9,11 @@ import Header from './components/Header'
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
-import DashboardPage from './pages/DashboardPage'
 import WardrobePage from './pages/WardrobePage'
-import BodyDataPage from './pages/BodyDataPage'
-import OutfitsPage from './pages/OutfitsPage'
 import RecommendationPage from './pages/RecommendationPage'
 import ProfilePage from './pages/ProfilePage'
 import VirtualTryOnPage from './pages/VirtualTryOnPage'
+import PublicOutfitsPage from './pages/PublicOutfitsPage'
 
 // Stores
 import { useAuthStore } from './stores'
@@ -98,6 +96,7 @@ const App: React.FC = () => {
                             {/* Public Routes */}
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/register" element={<RegisterPage />} />
+                            <Route path="/outfits/public" element={<PublicOutfitsPage />} />
 
                             {/* Protected Routes with Layout */}
                             <Route

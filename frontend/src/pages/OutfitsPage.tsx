@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { Card, Table, Button, Modal, Form, Input, Select, Switch, Typography, Grid } from '@arco-design/web-react'
-import { Plus, Edit, Trash2, Eye } from 'lucide-react'
+import { Card, Table, Button, Modal, Form, Input, Select, Switch, Typography, Grid, Message } from '@arco-design/web-react'
+import { Plus, Edit, Trash2, Eye, Share2, Link as LinkIcon } from 'lucide-react'
 import { outfitApi, wardrobeApi } from '../services/api'
 import { useOutfitStore } from '../stores'
 import { useMessage } from '../hooks/useMessage'
@@ -118,6 +118,56 @@ const OutfitsPage: React.FC = () => {
         setModalVisible(true)
     }
 
+    const handleShare = async (outfit: Outfit) => {
+        // 公开搭配才能分享
+        if (!outfit.is_public) {
+            Message.warning('请先将搭配设置为公开才能分享')
+            return
+        }
+
+        const shareUrl = `${window.location.origin}/outfits/public/${outfit.id}`
+        const shareText = `看看我的穿搭: ${outfit.name} - ${outfit.description || ''}`
+
+        // 使用 Web Share API (移动端)
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: outfit.name,
+                    text: shareText,
+                    url: shareUrl,
+                })
+            } catch (err) {
+                // 用户取消分享
+            }
+        } else {
+            // 桌面端：复制链接
+            try {
+                await navigator.clipboard.writeText(shareUrl)
+                Message.success('分享链接已复制到剪贴板')
+            } catch {
+                // fallback
+                const textArea = document.createElement('textarea')
+                textArea.value = shareUrl
+                document.body.appendChild(textArea)
+                textArea.select()
+                document.execCommand('copy')
+                document.body.removeChild(textArea)
+                Message.success('分享链接已复制到剪贴板')
+            }
+        }
+    }
+
+    const handleMakePublic = async (outfit: Outfit) => {
+        try {
+            await outfitApi.updateOutfit(outfit.id, { is_public: 1 } as any)
+            outfit.is_public = 1
+            setOutfits([...useOutfitStore.getState().outfits])
+            Message.success('搭配已公开')
+        } catch {
+            Message.error('设置失败')
+        }
+    }
+
     const columns = [
         { title: '名称', dataIndex: 'name', key: 'name' },
         { title: '描述', dataIndex: 'description', key: 'description', ellipsis: true },
@@ -141,6 +191,11 @@ const OutfitsPage: React.FC = () => {
             key: 'action',
             render: (_: any, record: Outfit) => (
                 <div style={{ display: 'flex', gap: 8 }}>
+                    {!record.is_public ? (
+                        <Button size="mini" type="text" icon={<LinkIcon size={14} />} onClick={() => handleMakePublic(record)} title="公开" />
+                    ) : (
+                        <Button size="mini" type="text" icon={<Share2 size={14} />} onClick={() => handleShare(record)} title="分享" />
+                    )}
                     <Button size="mini" type="text" icon={<Eye size={14} />} onClick={() => handleView(record)} />
                     <Button size="mini" type="text" icon={<Edit size={14} />} onClick={() => handleEdit(record)} />
                     <Button size="mini" type="text" status="danger" icon={<Trash2 size={14} />} onClick={() => handleDelete(record.id)} />

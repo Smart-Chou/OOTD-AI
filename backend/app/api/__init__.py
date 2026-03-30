@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.api import auth, body_data, clothing, outfits, recommendations, size_guides, analytics
+from app.api import auth, body_data, clothing, outfits, recommendations, size_guides, analytics, bulk
 
 api_router = APIRouter()
 
@@ -10,3 +10,4 @@ api_router.include_router(outfits.router, prefix="/outfits", tags=["Outfits"])
 api_router.include_router(recommendations.router, prefix="/recommendations", tags=["Recommendations"])
 api_router.include_router(size_guides.router, prefix="/size-guides", tags=["Size Guides"])
 api_router.include_router(analytics.router, prefix="/analytics", tags=["Analytics"])
+api_router.include_router(bulk.router, prefix="/bulk", tags=["Bulk"])
