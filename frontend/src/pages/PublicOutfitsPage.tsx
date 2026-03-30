@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
-import { Card, Typography, Row, Col, Spin, Button, Empty } from '@arco-design/web-react'
+import { Card, Typography, Spin, Button, Empty } from '@arco-design/web-react'
 import { ArrowLeft, Heart, Eye } from 'lucide-react'
 import { outfitApi } from '../services/api'
 import type { Outfit } from '../types'
@@ -67,65 +66,64 @@ const PublicOutfitsPage: React.FC = () => {
                 {outfits.length === 0 ? (
                     <Empty description="暂无公开穿搭，快来分享你的搭配吧！" />
                 ) : (
-                    <Row gutter={[16, 16]}>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {outfits.map(outfit => (
-                            <Col xs={24} sm={12} md={8} lg={6} key={outfit.id}>
-                                <Card
-                                    hoverable
-                                    className="h-full cursor-pointer"
-                                    onClick={() => handleViewOutfit(outfit)}
-                                    cover={
-                                        outfit.image_url ? (
-                                            <div
-                                                style={{
-                                                    height: 200,
-                                                    backgroundImage: `url(${outfit.image_url})`,
-                                                    backgroundSize: 'cover',
-                                                    backgroundPosition: 'center',
-                                                }}
-                                            />
-                                        ) : (
-                                            <div
-                                                style={{
-                                                    height: 200,
-                                                    background:
-                                                        'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
-                                                    display: 'flex',
-                                                    alignItems: 'center',
-                                                    justifyContent: 'center',
-                                                }}
-                                            >
-                                                <Text style={{ color: 'white', fontSize: 48 }}>
-                                                    👔
-                                                </Text>
+                            <Card
+                                key={outfit.id}
+                                hoverable
+                                className="h-full cursor-pointer"
+                                onClick={() => handleViewOutfit(outfit)}
+                                cover={
+                                    outfit.image_url ? (
+                                        <div
+                                            style={{
+                                                height: 200,
+                                                backgroundImage: `url(${outfit.image_url})`,
+                                                backgroundSize: 'cover',
+                                                backgroundPosition: 'center',
+                                            }}
+                                        />
+                                    ) : (
+                                        <div
+                                            style={{
+                                                height: 200,
+                                                background:
+                                                    'linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%)',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                            }}
+                                        >
+                                            <Text style={{ color: 'white', fontSize: 48 }}>
+                                                👔
+                                            </Text>
+                                        </div>
+                                    )
+                                }
+                            >
+                                <Card.Meta
+                                    title={outfit.name}
+                                    description={
+                                        <div>
+                                            <Text type="secondary" style={{ fontSize: 12 }}>
+                                                {outfit.description || '暂无描述'}
+                                            </Text>
+                                            <div className="flex items-center gap-4 mt-2 text-muted-foreground">
+                                                <span className="flex items-center gap-1">
+                                                    <Heart size={14} />
+                                                    {outfit.likes_count}
+                                                </span>
+                                                <span className="flex items-center gap-1">
+                                                    <Eye size={14} />
+                                                    {outfit.items?.length || 0} 件单品
+                                                </span>
                                             </div>
-                                        )
+                                        </div>
                                     }
-                                >
-                                    <Card.Meta
-                                        title={outfit.name}
-                                        description={
-                                            <div>
-                                                <Text type="secondary" style={{ fontSize: 12 }}>
-                                                    {outfit.description || '暂无描述'}
-                                                </Text>
-                                                <div className="flex items-center gap-4 mt-2 text-muted-foreground">
-                                                    <span className="flex items-center gap-1">
-                                                        <Heart size={14} />
-                                                        {outfit.likes_count}
-                                                    </span>
-                                                    <span className="flex items-center gap-1">
-                                                        <Eye size={14} />
-                                                        {outfit.items?.length || 0} 件单品
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        }
-                                    />
-                                </Card>
-                            </Col>
+                                />
+                            </Card>
                         ))}
-                    </Row>
+                    </div>
                 )}
 
                 {/* Outfit Detail Modal */}
@@ -158,7 +156,7 @@ const PublicOutfitsPage: React.FC = () => {
                                 {selectedOutfit.items?.map(item => (
                                     <Card key={item.id} size="small">
                                         <Text>{item.name}</Text>
-                                        <Text type="secondary" block className="text-xs">
+                                        <Text type="secondary" className="text-xs block mt-1">
                                             {item.category}
                                         </Text>
                                     </Card>
