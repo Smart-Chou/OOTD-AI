@@ -1,3 +1,3 @@
-import { message } from 'antd';
+import { message } from 'antd'
 
-export const useMessage = () => message;
+export const useMessage = () => message

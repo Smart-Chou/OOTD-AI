@@ -16,6 +16,7 @@
 ## 技术栈
 
 ### 前端
+
 - **框架**: React + TypeScript + Vite
 - **状态管理**: Zustand
 - **UI组件**: Ant Design / Material-UI
@@ -23,6 +24,7 @@
 - **测试**: Jest + React Testing Library
 
 ### 后端
+
 - **框架**: Python FastAPI
 - **数据库**: PostgreSQL
 - **AI服务**: Google Cloud Vision API, Stable Diffusion API
@@ -51,15 +53,18 @@
 ## 项目里程碑
 
 ### 已完成阶段
+
 1. **需求分析阶段** - 用户痛点分析和功能定义
 2. **SDD设计阶段** - 系统架构和技术方案设计
 3. **BMAD定义阶段** - 角色化智能体协作框架
 4. **Harness Engineering阶段** - 安全约束和质量保障框架
 
 ### 当前阶段
+
 5. **开发阶段** - 按3个月时间表执行开发任务
 
 ### 后续阶段
+
 6. **测试阶段** - 功能测试、性能测试、安全测试
 7. **部署与运维** - 生产环境部署和监控
 8. **文档整理与交付** - 最终项目交付

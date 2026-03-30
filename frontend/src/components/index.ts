@@ -1,11 +1,11 @@
-export { default as Header } from './Header';
-export { default as BodyDataForm } from './BodyDataForm';
-export { default as ClothingCard } from './ClothingCard';
-export { default as ClothingSelector } from './ClothingSelector';
-export { default as OutfitCard } from './OutfitCard';
-export { default as PhotoUploader } from './PhotoUploader';
-export { default as TryOnProgress } from './TryOnProgress';
-export { default as TryOnResult } from './TryOnResult';
+export { default as Header } from './Header'
+export { default as BodyDataForm } from './BodyDataForm'
+export { default as ClothingCard } from './ClothingCard'
+export { default as ClothingSelector } from './ClothingSelector'
+export { default as OutfitCard } from './OutfitCard'
+export { default as PhotoUploader } from './PhotoUploader'
+export { default as TryOnProgress } from './TryOnProgress'
+export { default as TryOnResult } from './TryOnResult'
 
-export type { ClothingItem } from './ClothingSelector';
-export { CLOTHING_LIST } from './ClothingSelector';
+export type { ClothingItem } from './ClothingSelector'
+export { CLOTHING_LIST } from './ClothingSelector'
