@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text, Enum
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text, Enum, Index
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 from app.core.database import Base
@@ -60,6 +60,10 @@ class ClothingCategory(str, enum.Enum):
 
 class ClothingItem(Base):
     __tablename__ = "clothing_items"
+    __table_args__ = (
+        Index('idx_user_category', 'user_id', 'category'),
+        Index('idx_user_created', 'user_id', 'created_at'),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))
@@ -81,6 +85,10 @@ class ClothingItem(Base):
 
 class Outfit(Base):
     __tablename__ = "outfits"
+    __table_args__ = (
+        Index('idx_user_created', 'user_id', 'created_at'),
+        Index('idx_is_public', 'is_public', 'created_at'),
+    )
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, ForeignKey("users.id"))

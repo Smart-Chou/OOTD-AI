@@ -310,24 +310,22 @@ const WardrobePage = ({ onNavigate = () => {} }: WardrobePageProps) => {
                             </div>
                         </div>
 
-                        {/* Clothes Grid */}
+                        {/* Clothes Grid - Responsive CSS Grid */}
                         {filteredClothes.length > 0 ? (
-                            <div className="flex flex-wrap gap-4">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                                 {filteredClothes.map(item => (
-                                    <div key={item.id} style={{ width: 'calc(25% - 12px)' }}>
-                                        <ClothingCard
-                                            id={item.id}
-                                            name={item.name}
-                                            category={item.category}
-                                            color={item.color}
-                                            season={item.season}
-                                            imageIndex={item.imageIndex}
-                                        />
-                                    </div>
+                                    <ClothingCard
+                                        key={item.id}
+                                        id={item.id}
+                                        name={item.name}
+                                        category={item.category}
+                                        color={item.color}
+                                        season={item.season}
+                                        imageIndex={item.imageIndex}
+                                    />
                                 ))}
                                 {/* Add new item card */}
                                 <div
-                                    style={{ width: 'calc(25% - 12px)' }}
                                     onClick={() => setShowUpload(true)}
                                     className="bg-muted border-2 border-dashed border-border rounded-xl h-52 flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-secondary transition-all duration-200 group"
                                 >

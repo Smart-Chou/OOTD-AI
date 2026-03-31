@@ -230,12 +230,11 @@ const HomePage = ({ onNavigate = () => {} }: HomePageProps) => {
                     </p>
                 </div>
 
-                <div className="flex flex-wrap gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                     {FEATURES.map((feature, index) => (
                         <div
                             key={index}
                             className="bg-card rounded-2xl p-6 shadow-card hover-lift cursor-pointer border border-border"
-                            style={{ flex: '1 1 calc(25% - 18px)', minWidth: '220px' }}
                         >
                             <div className="w-12 h-12 rounded-xl bg-secondary flex items-center justify-center mb-4 text-forest">
                                 <FeatureIcon name={feature.icon} />

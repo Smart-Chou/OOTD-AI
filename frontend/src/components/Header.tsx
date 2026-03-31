@@ -1,25 +1,29 @@
 import { useState } from 'react'
-import { Shirt, Sparkles, Menu, X, Camera, LogIn, UserPlus } from 'lucide-react'
+import { Menu, X, LogIn, UserPlus, Shirt } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { useNavigation } from '../hooks/useNavigation'
 
 interface HeaderProps {
     activePage?: string
     onNavigate?: (page: string) => void
 }
 
-const Header = ({ activePage = 'home', onNavigate = () => {} }: HeaderProps) => {
+const Header = ({ activePage: propActivePage, onNavigate }: HeaderProps) => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     const navigate = useNavigate()
+    const { navItems, activePage: currentPage } = useNavigation()
 
-    const navItems = [
-        { key: 'home', label: '首页', icon: <Shirt size={18} /> },
-        { key: 'wardrobe', label: '我的衣橱', icon: <Shirt size={18} /> },
-        { key: 'recommend', label: '智能推荐', icon: <Sparkles size={18} /> },
-        { key: 'tryon', label: '虚拟试穿', icon: <Camera size={18} /> },
-    ]
+    // 优先使用 propActivePage，否则使用 hook 中的 activePage
+    const activePage = propActivePage ?? currentPage
 
     const handleNav = (key: string) => {
-        onNavigate(key)
+        // 如果有外部 onNavigate 调用外部，否则使用内部导航
+        if (onNavigate) {
+            onNavigate(key)
+        } else {
+            const path = key === 'home' ? '/' : `/${key}`
+            navigate(path)
+        }
         setMobileMenuOpen(false)
     }
 
