@@ -47,7 +47,7 @@ describe('useAuthStore', () => {
                 username: 'test',
                 email: 'test@test.com',
                 role: 'user',
-                avatar_url: null,
+                avatar_url: undefined,
                 created_at: '',
             })
             result.current.setToken('test-token')
